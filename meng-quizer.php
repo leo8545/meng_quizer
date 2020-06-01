@@ -27,7 +27,7 @@ add_action('wp_ajax_my_action', function() {
 	$ex = get_post_meta((int) $ex_id,'meng_mcqs',true);
 	$result = [];
 	foreach($ex as $k => $e) {
-		$result[$k] = $e['options']['correct'];
+		$result[$k] = $e['options']['correct']; // All mcqs with their number => 'answer
 	}
 	// foreach( explode("&", $serialized) as $chunk ) {
 	// 	$params = explode('=', $chunk);
@@ -86,6 +86,15 @@ class Meng_Mcqs_Basic_Metabox
 			[self::class, 'meng_basic_mcqs_callback'],
 			'meng_mcqs_basic'
 		);
+
+		add_meta_box(
+			'meng_quiz_mcqs_basic_helper',
+			'Shortcode',
+			[self::class, 'metabox_helper_callback'],
+			'meng_mcqs_basic',
+			'side',
+			'high'
+		);
 	}
 
 	public function meng_basic_mcqs_callback($post)
@@ -98,7 +107,7 @@ class Meng_Mcqs_Basic_Metabox
 		<div class="basic_mcqs_wrapper">
 			<div class="mcqs">
 				<?php 
-				if(count($mcqs) > 0) {
+				if(is_array($mcqs) && count($mcqs) > 0) {
 					$counter = 0;
 					foreach( $mcqs as $mcq ) { 
 						$counter++;
@@ -118,6 +127,13 @@ class Meng_Mcqs_Basic_Metabox
 			</div>
 			<div class="btn add_btn"><span id="meng_mcqs_add_btn">Add MCQ</span></div>
 		</div>
+		<?php
+	}
+
+	public function metabox_helper_callback($post)
+	{
+		?>
+		<div class="meng_shortcode"><strong>[meng_mcqs_basic id="<?php echo $post->ID ?>" layout="simple"]</strong></div>
 		<?php
 	}
 
@@ -175,10 +191,9 @@ add_shortcode('meng_mcqs_basic', function($atts) {
 								$opt_key++; // to make it start from 1
 								if( strpos($option,":correct") !== false ) {
 									$option = explode(":", $option)[0];
-									$answer = true;
 								}
 								$id = "mcq-$key-option-$opt_key"; ?>
-								<label for="<?php echo $id ?>"><input type="radio" name="mcq[<?php echo $key ?>]" id="<?php echo $id ?>" value="<?php echo trim($option) ?>"> <?php echo $option ?></label>
+								<label for="<?php echo $id ?>" class="meng_radio"><input type="radio" name="mcq[<?php echo $key ?>]" id="<?php echo $id ?>" class="meng_mcq_input_radio hidden" value="<?php echo trim($option) ?>"><span class="meng_label"></span><span><?php echo $option ?></span></label>
 							<?php endforeach; ?>
 						</div>
 					</div>
