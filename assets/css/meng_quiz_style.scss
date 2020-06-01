@@ -1,0 +1,13 @@
+.answer {
+	&.correct {
+		color: green;
+	}
+	&.incorrect {
+		color: red;
+	}
+}
+.mcq-options {
+	label {
+		display: block;
+	}
+}
