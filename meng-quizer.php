@@ -17,7 +17,8 @@ add_action('wp_enqueue_scripts', function() {
 	wp_localize_script('meng_quiz_script_front', 'ajaxObject', [
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'security' => wp_create_nonce( 'my-special-string' )
-	]);
+		]);
+	wp_enqueue_script('meng_quiz_script_jquery_ui', MENG_QUIZ_URI . '/assets/js/jquery-ui.min.js', ['jquery']);
 });
 
 add_action('wp_ajax_my_action', function() {
@@ -68,6 +69,24 @@ function meng_register_quiz_type() {
         'supports'           => array( 'title', 'editor', 'thumbnail' ),
 	];
 	register_post_type('meng_mcqs_basic', $args);
+
+	$args = [
+		'labels' => [
+			'name' => 'Sortables Basic'
+		],
+		'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array( 'slug' => 'basic_sortables' ),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => null,
+        'supports'           => array( 'title', 'editor', 'thumbnail' ),
+	];
+	register_post_type('meng_sortables_basic', $args);
 }
 
 class Meng_Mcqs_Basic_Metabox
@@ -80,6 +99,7 @@ class Meng_Mcqs_Basic_Metabox
 
 	public static function add_meta_box()
 	{
+		// Basic mcqs
 		add_meta_box(
 			'meng_quiz_mcqs_basic',
 			'Mcqs Basic',
@@ -92,6 +112,22 @@ class Meng_Mcqs_Basic_Metabox
 			'Shortcode',
 			[self::class, 'metabox_helper_callback'],
 			'meng_mcqs_basic',
+			'side',
+			'high'
+		);
+
+		// Basic sortables
+		add_meta_box(
+			'meng_quiz_sortables_basic',
+			'Sortables Basic',
+			[self::class, 'meng_basic_sortables_callback'],
+			'meng_sortables_basic'
+		);
+		add_meta_box(
+			'meng_quiz_sortables_basic_helper',
+			'Shortcode',
+			[self::class, 'metabox_sortables_helper_callback'],
+			'meng_sortables_basic',
 			'side',
 			'high'
 		);
@@ -130,11 +166,42 @@ class Meng_Mcqs_Basic_Metabox
 		<?php
 	}
 
+	public function meng_basic_sortables_callback($post)
+	{
+		$sortables = get_post_meta($post->ID, 'meng_sortables', true);
+		echo '<pre>';
+		print_r($sortables);
+		echo '</pre>';
+		?>
+		<div class="basic_sortables_wrapper">
+			<div class="meng_sortables">
+				<?php if(is_array($sortables) && count($sortables) > 0): $counter = 0; ?>
+					<?php foreach($sortables as $field): $counter++; ?>
+						<div class="sortables_field_wrapper">
+							<div><?php echo "$counter. " ?></div>
+							<input type="text" name="meng_sortables[<?php echo $counter ?>][static]" value="<?php echo sanitize_text_field($field['static']) ?>">
+							<input type="text" name="meng_sortables[<?php echo $counter ?>][dynamic]" value="<?php echo sanitize_text_field($field['dynamic']) ?>">
+						</div>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</div>
+			<div class="btn add_btn"><span id="meng_sortable_add_btn">Add Sortable</span></div>
+		</div>
+		<?php	
+	}
+
 	public function metabox_helper_callback($post)
 	{
 		?>
 		<div class="meng_shortcode"><strong>[meng_mcqs_basic id="<?php echo $post->ID ?>" layout="simple"]</strong></div>
 		<?php
+	}
+
+	public static function metabox_sortables_helper_callback($post)
+	{
+		?>
+		<div class="meng_shortcode"><strong>[meng_sortables_basic id="<?php echo $post->ID ?>" layout="simple"]</strong></div>
+		<?php	
 	}
 
 	public static function save($post_id)
@@ -158,6 +225,20 @@ class Meng_Mcqs_Basic_Metabox
 				}
 			}
 			update_post_meta($post_id, 'meng_mcqs', $valid_mcqs);
+		}
+
+		if(array_key_exists('meng_sortables', $_POST)) {
+			$meng_sortables = $_POST['meng_sortables'];
+			$valid_sortables = [];
+			$counter = 0;
+			foreach($meng_sortables as $field) {
+				$counter++;
+				if(!empty($field['static']) && !empty($field['dynamic'])) {
+					$valid_sortables[$counter]['static'] = htmlspecialchars($field['static']);
+					$valid_sortables[$counter]['dynamic'] = htmlspecialchars($field['dynamic']);
+				}
+			}
+			update_post_meta($post_id, 'meng_sortables', $valid_sortables);
 		}
 	}
 }
@@ -209,6 +290,53 @@ add_shortcode('meng_mcqs_basic', function($atts) {
 			<?php endif; ?>
 		</div>
 		
+		<?php
+	}
+	$output = ob_get_clean();
+	return $output;
+});
+
+// sortables
+add_shortcode("meng_sortables_basic", function($atts) {
+	$atts = shortcode_atts([
+		'id' => 0,
+		'layout' => 'simple'
+	], $atts, 'meng_sortables_basic');
+	$excercise = get_post((int) $atts['id']);
+	ob_start();
+	if( !is_null($excercise) && $excercise->post_type === 'meng_sortables_basic' ) {
+		$sortables = get_post_meta($excercise->ID, 'meng_sortables', true ); 
+		?>
+		<div class="meng_sortables_container">
+			<ul class="meng_static_text">
+				<?php foreach($sortables as $field):  ?>
+					<li><?php echo $field['static'] ?></li>
+				<?php endforeach; ?>
+			</ul>
+			<ul id="meng_sortables_<?php echo $atts['id'] ?>" class="meng_sortables">
+				<?php 
+				$original_sortables = $sortables; 
+				shuffle($sortables);
+				foreach($sortables as $field): ?>
+					<li><?php echo $field['dynamic'] ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<div class="meng_answers_wrapper">
+			<p class="meng_toggle_sibling">show answers</p>
+			<table class="meng_sortables_answers" style="display:none;">
+				<?php foreach($original_sortables as $field):  ?>
+					<tr>
+						<td>
+							<span><?php echo $field['static'] ?></span>
+						</td>
+						<td>
+							<span><?php echo $field['dynamic'] ?></span>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+				</table>
+		</div>
 		<?php
 	}
 	$output = ob_get_clean();

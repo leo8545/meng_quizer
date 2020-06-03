@@ -14,7 +14,7 @@
 		position: relative;
 		cursor: pointer;
 		line-height: 20px;
-		font-size: 14px;
+		// font-size: 14px;
 		margin: 15px;
 		.meng_label {
 			position: relative;
@@ -57,5 +57,36 @@
 	}
 	.hidden {
 		display: none;
+	}
+}
+// sortables
+.meng_sortables_container {
+	display: flex;
+	ul {
+		list-style: none;
+		padding: 10px;
+		margin: 0;
+		li {
+			text-align: center;
+			margin-bottom: 10px;
+		}
+	}
+	& > * {
+		flex: 0 1 50%;
+		flex-wrap: wrap;
+	}
+	.meng_static_text {
+		& > li {
+			background: -webkit-linear-gradient(top, #fcfff4 0%, #dbdbdb 100%);
+			border: 1px solid #ccc;
+			color: blue;
+		}
+	}
+	.meng_sortables {
+		& > li {
+			background: -webkit-linear-gradient(top, #fcfff4 0%, #dbdbdb 100%);
+			border: 1px solid #ccc;
+			cursor: pointer;
+		}
 	}
 }

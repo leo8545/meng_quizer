@@ -54,5 +54,19 @@
 				);
 			});
 		});
+		$("ul.meng_sortables").sortable();
+		var c = 0;
+		$(".meng_toggle_sibling").on("click", (e) => {
+			c++;
+			if (c % 2 === 0) {
+				$(".meng_toggle_sibling").text("show answers");
+			} else {
+				$(".meng_toggle_sibling").text("hide answers");
+			}
+			$(".meng_toggle_sibling")
+				.closest(".meng_answers_wrapper")
+				.find(".meng_sortables_answers")
+				.toggle();
+		});
 	});
 })(jQuery);
