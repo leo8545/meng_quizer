@@ -1,10 +1,4 @@
 .mcqs {
-	& > * {
-		border: 1px solid #d2dfee;
-		padding: 5px;
-		margin: 10px 0;
-		background-color: #d2dfee;
-	}
 	.mcqs_statement,
 	.mcqs_options {
 		width: 100%;
@@ -15,18 +9,48 @@
 		margin-bottom: 10px;
 	}
 }
-#meng_mcqs_add_btn {
-	display: inline-block;
-	background-color: #55ffbd;
-	padding: 8px 30px;
-	box-shadow: 1px 0px 3px #ddd;
-	border: 1px solid;
-	font-weight: 700;
-	cursor: pointer;
-	&:hover {
-		border-color: #d2dfee;
+.meng_add_btn {
+	span {
+		display: inline-block;
+		background-color: #55ffbd;
+		padding: 8px 30px;
+		box-shadow: 1px 0px 3px #ddd;
+		border: 1px solid;
+		font-weight: 700;
+		cursor: pointer;
+		&:hover {
+			border-color: #d2dfee;
+		}
 	}
 }
 .meng_shortcode {
 	font-family: consolas, monospace;
+}
+// Single field
+.meng_quiz_single_field {
+	border: 1px solid #d2dfee;
+	padding: 5px;
+	margin: 10px 0;
+	background-color: #d2dfee;
+}
+// Sortables
+.sortables_field_wrapper {
+	// display: flex;
+	// align-items: center;
+	.meng_counter {
+		font-weight: 700;
+		font-size: 120%;
+	}
+	input {
+		// margin: 10px;
+		margin-bottom: 10px;
+		padding: 10px;
+		width: 100%;
+		display: block;
+	}
+	.meng_sortables_dynamic_input {
+		// flex: 1 1 45%;
+		// border: 2px solid #0089ff;
+		color: #0089ff;
+	}
 }
