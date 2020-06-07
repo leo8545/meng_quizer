@@ -54,7 +54,15 @@
 				);
 			});
 		});
-		$("ul.meng_sortables").sortable();
+		$("ul.meng_sortables").sortable({
+			start: function (event, ui) {
+				$(ui.item).addClass("meng-sortable-active");
+			},
+			stop: function (event, ui) {
+				$(ui.item).removeClass("meng-sortable-active");
+			},
+		});
+		$("ul.meng_sortables").disableSelection();
 		var c = 0;
 		$(".meng_toggle_sibling").on("click", (e) => {
 			c++;
