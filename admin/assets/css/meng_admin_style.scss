@@ -32,6 +32,15 @@
 	padding: 5px;
 	margin: 10px 0;
 	background-color: #d2dfee;
+	label {
+		font-weight: 600;
+		margin: 10px 0;
+		display: block;
+	}
+	input {
+		width: 100%;
+		padding: 10px;
+	}
 }
 // Sortables
 .sortables_field_wrapper {
@@ -53,4 +62,12 @@
 		// border: 2px solid #0089ff;
 		color: #0089ff;
 	}
+}
+.meng-admin_input {
+	width: 100%;
+}
+.meng-counter {
+	font-weight: 700;
+	font-size: 18px;
+	margin-bottom: 10px;
 }

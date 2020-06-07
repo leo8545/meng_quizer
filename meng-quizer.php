@@ -87,9 +87,11 @@ final class Meng_Quizer
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_styles']);
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_scripts']);
 		add_action('wp_ajax_my_action', [$public, 'meng_ajax_action']);
+		add_action('wp_ajax_action_meng_cloze', [$public, 'meng_ajax_cloze_action']);
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);
+		add_shortcode('meng_mcqs_cloze', [$public, 'meng_mcqs_cloze_shortcode_callback']);
 	}
 
 	/**

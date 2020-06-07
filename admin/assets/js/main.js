@@ -18,5 +18,12 @@
 						</div>`;
 			$(".meng_sortables").append(html);
 		});
+		// var counter2 = $(".mcqs-cloze>*").length;
+		// $("span#meng_mcqs_cloze_add_btn").on("click", (e) => {
+		// 	counter2++;
+		// 	var html = `<div class="meng_mcqs_cloze_wrapper meng_quiz_single_field">
+		// 					<div class="meng_counter">${counter2}</div>
+		// 					<input name="meng_mcqs_cloze[${counter}]"`
+		// });
 	});
 })(jQuery);

@@ -7,6 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Meng_Quiz_Public
 {
+	/**
+	 * Enqueues public stylesheets
+	 *
+	 * @return void
+	 */
 	public static function enqueue_styles()
 	{
 		$dir = MENG_QUIZ_URI . '/public/assets/css/';
@@ -38,6 +43,16 @@ class Meng_Quiz_Public
 		die();
 	}
 
+	public function meng_ajax_cloze_action()
+	{
+		check_ajax_referer('my-special-string', 'security');
+		$post = $_POST['postData'];
+		$ex_id = (int) $post['postId'];
+		$excercise = get_post_meta($ex_id, 'meng_mcqs_cloze', true);
+		echo json_encode($excercise);
+		die();
+	}
+
 	public static function meng_mcqs_basic_shortcode_callback($atts)
 	{
 		$atts = shortcode_atts([
@@ -62,6 +77,20 @@ class Meng_Quiz_Public
 		ob_start();
 
 		require MENG_QUIZ_DIR . 'public/templates/meng-sortables-basic.php';
+
+		$output = ob_get_clean();
+		return $output;
+	}
+
+	public static function meng_mcqs_cloze_shortcode_callback($atts)
+	{
+		$atts = shortcode_atts([
+			'id' => 0
+		], $atts, 'meng_mcqs_cloze');
+
+		ob_start();
+
+		require MENG_QUIZ_DIR . 'public/templates/meng-mcqs-cloze.php';
 
 		$output = ob_get_clean();
 		return $output;

@@ -50,6 +50,15 @@ class Meng_Quiz_Admin_Metabox
 			'side',
 			'high'
 		);
+
+		add_meta_box(
+			'meng_mcqs_cloze',
+			__( 'MCQs Cloze', 'meng' ),
+			function() {
+				require MENG_QUIZ_DIR . '/admin/partials/meng-metabox-mcqs-cloze.php';
+			},
+			'meng_mcqs_cloze'
+		);
 	}
 
 	public static function save($post_id)
@@ -87,6 +96,22 @@ class Meng_Quiz_Admin_Metabox
 				}
 			}
 			update_post_meta($post_id, 'meng_sortables', $valid_sortables);
+		}
+
+		if( array_key_exists('meng_mcqs_cloze', $_POST) ) {
+			$meng_mcqs_cloze = $_POST['meng_mcqs_cloze'];
+			$valid_cloze = [];
+			foreach( $meng_mcqs_cloze as $_option => $cloze ) {
+				$valid_cloze[$_option]['options']['string'] = $cloze['options'];
+				$valid_cloze[$_option]['description'] = $cloze['description'];
+				foreach( explode("|", $cloze['options']) as $_index => $__option ) {
+					$valid_cloze[$_option]['options']['array'][] = trim($__option);
+					if( strpos($__option, ":correct") !== false ) {
+						$valid_cloze[$_option]['options']['correct'] = trim( explode(":correct", $__option)[0] );
+					}
+				}
+			}
+			update_post_meta($post_id, 'meng_mcqs_cloze', $valid_cloze);
 		}
 	}
 }

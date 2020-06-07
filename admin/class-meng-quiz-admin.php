@@ -26,6 +26,10 @@ class Meng_Quiz_Admin
 				'label' => 'MCQs Basic',
 				'slug' => 'basic_mcqs'
 			],
+			'meng_mcqs_cloze' => [
+				'label' => 'MCQs Cloze',
+				'slug' => 'cloze_mcqs'
+			],
 			'meng_sortables_basic' => [
 				'label' => 'Sortables Basic',
 				'slug' => 'basic_sortables'
