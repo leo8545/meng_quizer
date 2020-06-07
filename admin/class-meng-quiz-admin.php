@@ -55,55 +55,44 @@ class Meng_Quiz_Admin
 
 	}
 
-	public static function meng_sortables_basic_post_columns($columns)
+	public static function __callStatic($func, $args)
 	{
-		return [
-			'cb' => $columns['cb'],
-			'title' => $columns['title'],
-			'sortables_count' => 'No. of Sortables',
-			'sortables_shortcode' => 'Shortcode',
-			'date' => $columns['date']
+		$post_columns = [
+			'meng_sortables_basic_post_columns',
+			'meng_mcqs_basic_post_columns',
+			'meng_mcqs_cloze_post_columns'
 		];
-	}
-
-	public static function meng_sortables_basic_post_custom_column($column, $post_id)
-	{
-		if($column === 'sortables_count') {
-			$meng_sortables = get_post_meta($post_id, "meng_sortables", true);
-			if(is_array($meng_sortables) && count($meng_sortables) > 0) {
-				echo count($meng_sortables);
-			} else {
-				echo 0;
-			}
+		$column_id = array_search($func, $post_columns);
+		if( $column_id !== false ) {
+			$columns = $args[0];
+			return [
+				'cb' => $columns['cb'],
+				'title' => $columns['title'],
+				'meng_count' => 'No. of ' . explode('_', $post_columns[$column_id])[1],
+				'meng_shortcode' => 'Shortcode',
+				'date' => $columns['date']
+			];
 		}
-		if($column === 'sortables_shortcode') {
-			echo "<pre>[meng_sortables_basic id=$post_id]</pre>";
-		}
-	}
 
-	public static function meng_mcqs_basic_post_columns($columns)
-	{
-		return [
-			'cb' => $columns['cb'],
-			'title' => $columns['title'],
-			'mcqs_count' => 'No. of MCQs',
-			'mcqs_shortcode' => 'Shortcode',
-			'date' => $columns['date']
+		$custom_columns = [
+			'meng_mcqs_basic_post_custom_column' => 'meng_mcqs', // function_name => post_meta_field_id
+			'meng_mcqs_cloze_post_custom_column' => 'meng_mcqs_cloze',
+			'meng_sortables_basic_post_custom_column' => 'meng_sortables',
 		];
-	}
-
-	public static function meng_mcqs_basic_post_custom_column($column, $post_id)
-	{
-		if($column === 'mcqs_count') {
-			$meng_mcqs = get_post_meta($post_id, "meng_mcqs", true);
-			if(is_array($meng_mcqs) && count($meng_mcqs) > 0) {
-				echo count($meng_mcqs);
-			} else {
-				echo 0;
+		$custom_column_index = array_search($func, array_keys($custom_columns));
+		if( $custom_column_index !== false ) {
+			$col = $args[0];
+			$post_id = (int) $args[1];
+			if( $col == 'meng_count' ) {
+				$field_id = array_values($custom_columns)[(int) $custom_column_index];
+				$meta = get_post_meta($post_id, $field_id, true);
+				echo is_array($meta) ? count($meta) : 0;
 			}
-		}
-		if($column === 'mcqs_shortcode') {
-			echo "<pre>[meng_mcqs_basic id=$post_id]</pre>";
+			if( $col == 'meng_shortcode' ) {
+				$arr = explode("_", array_keys($custom_columns)[$custom_column_index]);
+				echo '[' . $arr[0] . '_' . $arr[1] . '_' . $arr[2] . ' id="' . $post_id . '"]';
+			}
+			return;
 		}
 	}
 

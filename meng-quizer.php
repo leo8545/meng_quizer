@@ -105,10 +105,12 @@ final class Meng_Quizer
 		add_action('admin_enqueue_scripts', [$admin, 'enqueue_styles']);
 		add_action('admin_enqueue_scripts', [$admin, 'enqueue_scripts']);
 		add_action('init', [$admin, 'register_post_types']);
-		add_filter('manage_meng_sortables_basic_posts_columns', [$admin, 'meng_sortables_basic_post_columns'], 10, 1);
-		add_action('manage_meng_sortables_basic_posts_custom_column', [$admin, 'meng_sortables_basic_post_custom_column'], 10, 2);
-		add_filter('manage_meng_mcqs_basic_posts_columns', [$admin, 'meng_mcqs_basic_post_columns'], 10, 1);
-		add_action('manage_meng_mcqs_basic_posts_custom_column', [$admin, 'meng_mcqs_basic_post_custom_column'], 10, 2);
+		add_filter('manage_meng_sortables_basic_posts_columns', ['Meng_Quiz_Admin', 'meng_sortables_basic_post_columns'], 10, 1);
+		add_action('manage_meng_sortables_basic_posts_custom_column', ['Meng_Quiz_Admin', 'meng_sortables_basic_post_custom_column'], 10, 2);
+		add_filter('manage_meng_mcqs_basic_posts_columns', ['Meng_Quiz_Admin', 'meng_mcqs_basic_post_columns'], 10, 1);
+		add_action('manage_meng_mcqs_basic_posts_custom_column', ['Meng_Quiz_Admin', 'meng_mcqs_basic_post_custom_column'], 10, 2);
+		add_filter('manage_meng_mcqs_cloze_posts_columns', ['Meng_Quiz_Admin', 'meng_mcqs_cloze_post_columns'], 10, 1);
+		add_action('manage_meng_mcqs_cloze_posts_custom_column', ['Meng_Quiz_Admin', 'meng_mcqs_cloze_post_custom_column'], 10, 2);
 		// Class: Metabox
 		add_action('add_meta_boxes', ['Meng_Quiz_Admin_Metabox', 'add']);
 		add_action('save_post', ['Meng_Quiz_Admin_Metabox', 'save']);
