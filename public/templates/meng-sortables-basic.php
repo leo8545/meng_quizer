@@ -9,7 +9,7 @@ $excercise = get_post((int) $atts['id']);
 if( !is_null($excercise) && $excercise->post_type === 'meng_sortables_basic' ) {
 	$sortables = get_post_meta($excercise->ID, 'meng_sortables', true ); 
 	?>
-	<div class="meng_sortables_container">
+	<div class="meng_sortables_container meng-layout_<?php echo in_array($atts['layout'], ['simple', 'left']) ? $atts['layout'] : 'simple'; ?>">
 		<ul class="meng_static_text">
 			<?php foreach($sortables as $field):  ?>
 				<li><?php echo $field['static'] ?></li>
