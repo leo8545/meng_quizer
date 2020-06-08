@@ -114,6 +114,8 @@ final class Meng_Quizer
 		// Class: Metabox
 		add_action('add_meta_boxes', ['Meng_Quiz_Admin_Metabox', 'add']);
 		add_action('save_post', ['Meng_Quiz_Admin_Metabox', 'save']);
+		// Admin menu page
+		add_action('admin_menu', [$admin, 'admin_menu_page']);
 	}
 
 	/**

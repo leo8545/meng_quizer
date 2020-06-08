@@ -96,5 +96,17 @@ class Meng_Quiz_Admin
 		}
 	}
 
+	public static function admin_menu_page()
+	{
+		add_menu_page(
+			__('Meng Quizer', 'meng'),
+			__('Meng Quizer', 'meng'),
+			'manage_options',
+			'meng_quizer',
+			function() {
+				require MENG_QUIZ_DIR . '/admin/partials/meng-quizer-menu.php';
+			}
+		);
+	}
 
 }
