@@ -110,13 +110,15 @@
 			}
 		});
 		// Meng Cloze Tabs
-		console.log($(".meng_tabs_wrapper .meng_cloze_tab_content"));
-		$(".meng_tabs_wrapper .meng_cloze_tab_content")[0].classList.add(
-			"meng-active-tab-content"
-		);
-		$(".meng_tabs_headings .meng-tab-heading")[0].classList.add(
-			"meng-active-tab"
-		);
+		// console.log($(".meng_tabs_wrapper .meng_cloze_tab_content"));
+		waitForEl($(".meng_tabs_wrapper"), () => {
+			$(".meng_tabs_wrapper .meng_cloze_tab_content")[0].classList.add(
+				"meng-active-tab-content"
+			);
+			$(".meng_tabs_headings .meng-tab-heading")[0].classList.add(
+				"meng-active-tab"
+			);
+		});
 		$(".meng-tab-heading").on("click", (e) => {
 			var parent = e.target.closest(".meng_tabs_headings");
 			$.each(parent.children, (i, v) => {
@@ -132,6 +134,99 @@
 				}
 				console.log(contentId);
 			});
+		});
+		waitForEl($(".meng_blanks_basic_form"), (e) => {
+			var form = $(".meng_blanks_basic_form");
+			var postId = form.find("#ex_id").val();
+			var result = {};
+			$.ajax({
+				data: {
+					action: "action_meng_blanks_basic",
+					security: ajaxObject.security,
+					postId,
+				},
+				method: "POST",
+				url: ajaxObject.ajax_url,
+			})
+				.success((_response) => {
+					var response = JSON.parse(_response);
+					$.each(response, (i, v) => {
+						result[parseInt(i)] = v.correct;
+					});
+					console.log(result);
+				})
+				.fail(function (jqXHR, exception) {
+					console.log(exception);
+				});
+			form.submit((e) => {
+				e.preventDefault();
+				var inputs = form.find("input.meng_blanks_basic_input");
+				var correctCounter = 0;
+				$.each(inputs, (i, v) => {
+					var id = parseInt(v.getAttribute("data-id"));
+					if (v.value.toLowerCase().trim() == result[id].toLowerCase().trim()) {
+						correctCounter++;
+						var rightInput = $(`input.meng_blanks_basic_input[data-id=${id}]`);
+						var _result = rightInput
+							.closest("td")
+							.find("div.meng_blanks_basic_result");
+						if (_result.length === 0) {
+							rightInput
+								.closest("td")
+								.append(
+									`<div class="meng_blanks_basic_result">correct answer</div>`
+								);
+						} else {
+							rightInput
+								.closest("td")
+								.find("div.meng_blanks_basic_result")
+								.text("correct answer");
+						}
+					} else {
+						var wrongInput = $(
+							`input.meng_blanks_basic_input[data-id="${i + 1}"`
+						);
+						var _result = wrongInput
+							.closest("td")
+							.find("div.meng_blanks_basic_result");
+						if (_result.length === 0) {
+							wrongInput
+								.closest("td")
+								.append(
+									'<div class="meng_blanks_basic_result">wrong answer</div>'
+								);
+						} else {
+							wrongInput
+								.closest("td")
+								.find("div.meng_blanks_basic_result")
+								.text("wrong answer");
+						}
+					}
+				});
+				if (
+					$(".meng_blanks_basic_container").find(
+						".meng_blanks_basic_final_result"
+					).length !== 0
+				) {
+					$(".meng_blanks_basic_final_result").text(
+						`Your result is ${
+							inputs.length
+								? (parseInt(correctCounter) / inputs.length) * 100
+								: 0
+						}%`
+					);
+				} else {
+					$(".meng_blanks_basic_container").append(
+						`<div class="meng_blanks_basic_final_result">${
+							parseInt(correctCounter) / result.length
+						}%</div>`
+					);
+				}
+			});
+		});
+		$(".meng_blanks_basic_form").on("submit", (e) => {
+			e.preventDefault();
+			console.log("jello");
 		});
 	});
 })(jQuery);

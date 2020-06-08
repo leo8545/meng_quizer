@@ -86,12 +86,18 @@ final class Meng_Quizer
 		$public = new Meng_Quiz_Public;
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_styles']);
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_scripts']);
+		// Ajax actions
+		// 1. for mcqs basic
 		add_action('wp_ajax_my_action', [$public, 'meng_ajax_action']);
+		// 2. for mcqs cloze
 		add_action('wp_ajax_action_meng_cloze', [$public, 'meng_ajax_cloze_action']);
+		// 3. for blanks basic
+		add_action('wp_ajax_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);
 		add_shortcode('meng_mcqs_cloze', [$public, 'meng_mcqs_cloze_shortcode_callback']);
+		add_shortcode('meng_blanks_basic', [$public, 'meng_blanks_basic_shortcode_callback']);
 	}
 
 	/**

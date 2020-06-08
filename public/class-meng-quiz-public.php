@@ -80,6 +80,22 @@ class Meng_Quiz_Public
 	}
 
 	/**
+	 * Ajax action callback for Cloze Mcqs
+	 * 
+	 * Sends json of cloze mcqs meta of excercise
+	 *
+	 * @return void
+	 */
+	public function meng_ajax_blanks_basic_action()
+	{
+		check_ajax_referer('my-special-string', 'security');
+		$ex_id = (int) $_POST['postId'];
+		$excercise = get_post_meta($ex_id, 'meng_blanks_basic', true);
+		echo json_encode($excercise);
+		die();
+	}
+
+	/**
 	 * Callback for shortcode: meng_mcqs_basic
 	 *
 	 * @param array $atts
@@ -135,6 +151,26 @@ class Meng_Quiz_Public
 		ob_start();
 
 		require MENG_QUIZ_DIR . 'public/templates/meng-mcqs-cloze.php';
+
+		$output = ob_get_clean();
+		return $output;
+	}
+	
+	/**
+	 * Callback for shortcode: meng_mcqs_cloze
+	 *
+	 * @param array $atts
+	 * @return string
+	 */
+	public static function meng_blanks_basic_shortcode_callback($atts)
+	{
+		$atts = shortcode_atts([
+			'id' => 0
+		], $atts, 'meng_blanks_basic');
+
+		ob_start();
+
+		require MENG_QUIZ_DIR . 'public/templates/meng-blanks-basic.php';
 
 		$output = ob_get_clean();
 		return $output;

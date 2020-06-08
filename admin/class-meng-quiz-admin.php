@@ -34,6 +34,10 @@ class Meng_Quiz_Admin
 				'label' => 'Sortables Basic',
 				'slug' => 'basic_sortables'
 			],
+			'meng_blanks_basic' => [
+				'label' => 'Blanks Basic',
+				'slug' => 'basic_blanks'
+			]
 		];
 
 		foreach( $quiz_types as $id => $args ) {

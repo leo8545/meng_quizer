@@ -59,6 +59,26 @@ class Meng_Quiz_Admin_Metabox
 			},
 			'meng_mcqs_cloze'
 		);
+
+		add_meta_box(
+			'meng_blanks_basic',
+			__('Blanks Basic', 'meng'),
+			function() {
+				require MENG_QUIZ_DIR . '/admin/partials/meng-metabox-blanks-basic.php';
+			},
+			'meng_blanks_basic'
+		);
+
+		add_meta_box(
+			'meng_blanks_basic_helper',
+			__('Shortcode', 'meng'),
+			function($post) { ?>
+				<div class="meng_shortcode"><strong>[meng_blanks_basic id="<?php echo $post->ID ?>" layout="simple"]</strong></div> <?php
+			},
+			'meng_blanks_basic',
+			'side',
+			'high'
+		);
 	}
 
 	public static function save($post_id)
@@ -112,6 +132,20 @@ class Meng_Quiz_Admin_Metabox
 				}
 			}
 			update_post_meta($post_id, 'meng_mcqs_cloze', $valid_cloze);
+		}
+
+		if(array_key_exists( 'meng_blanks_basic', $_POST )) {
+			$meng_blanks_basic = $_POST['meng_blanks_basic'];
+			$valid_blanks = [];
+			$counter = 0;
+			foreach( $meng_blanks_basic as $blank ) {
+				$counter++;
+				preg_match("/\[\w+\]/i", $blank['statement'], $matches);
+				$correct = substr($matches[0], 1, strpos($matches[0], ']')-1);
+				$valid_blanks[$counter]['statement'] = $blank['statement'];
+				$valid_blanks[$counter]['correct'] = trim($correct);
+			}
+			update_post_meta($post_id, 'meng_blanks_basic', $valid_blanks);
 		}
 	}
 }
