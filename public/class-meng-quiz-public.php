@@ -15,24 +15,43 @@ class Meng_Quiz_Public
 	public static function enqueue_styles()
 	{
 		$dir = MENG_QUIZ_URI . '/public/assets/css/';
+
+		// Main css public file
 		wp_enqueue_style('meng_public_style', $dir . 'meng_public_style.min.css', [], MENG_VERSION);
 	}
 
+	/**
+	 * Enqueues public javascript files
+	 *
+	 * @return void
+	 */
 	public static function enqueue_scripts()
 	{
 		$dir = MENG_QUIZ_URI . '/public/assets/js/';
+		
+		// Main script file
 		wp_enqueue_script('meng_public_script', $dir . 'meng_public_script.js', ['jquery'], MENG_VERSION);
+
+		// Ajax object for main file
 		wp_localize_script('meng_public_script', 'ajaxObject', [
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'security' => wp_create_nonce( 'my-special-string' )
 		]);
+		
+		// jQuery-UI script
 		wp_enqueue_script('jquery-ui', $dir . 'jquery-ui.min.js', ['jquery']);
 	}
 
+	/**
+	 * Ajax action callback for Basic Mcqs
+	 * 
+	 * Sends json of correct options of excercise
+	 *
+	 * @return void
+	 */
 	public static function meng_ajax_action()
 	{
 		check_ajax_referer( 'my-special-string', 'security' );
-		$serialized = $_POST['serialized'];
 		$ex_id = $_POST["exId"];
 		$ex = get_post_meta((int) $ex_id,'meng_mcqs',true);
 		$result = [];
@@ -43,6 +62,13 @@ class Meng_Quiz_Public
 		die();
 	}
 
+	/**
+	 * Ajax action callback for Cloze Mcqs
+	 * 
+	 * Sends json of cloze mcqs meta of excercise
+	 *
+	 * @return void
+	 */
 	public function meng_ajax_cloze_action()
 	{
 		check_ajax_referer('my-special-string', 'security');
@@ -53,6 +79,12 @@ class Meng_Quiz_Public
 		die();
 	}
 
+	/**
+	 * Callback for shortcode: meng_mcqs_basic
+	 *
+	 * @param array $atts
+	 * @return string
+	 */
 	public static function meng_mcqs_basic_shortcode_callback($atts)
 	{
 		$atts = shortcode_atts([
@@ -67,6 +99,12 @@ class Meng_Quiz_Public
 		return $output;
 	}
 
+	/**
+	 * Callback for shortcode: meng_sortables_basic
+	 *
+	 * @param array $atts
+	 * @return string
+	 */
 	public static function meng_sortables_basic_shortcode_callback($atts)
 	{
 		$atts = shortcode_atts([
@@ -82,6 +120,12 @@ class Meng_Quiz_Public
 		return $output;
 	}
 
+	/**
+	 * Callback for shortcode: meng_mcqs_cloze
+	 *
+	 * @param array $atts
+	 * @return string
+	 */
 	public static function meng_mcqs_cloze_shortcode_callback($atts)
 	{
 		$atts = shortcode_atts([
