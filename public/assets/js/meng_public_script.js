@@ -135,6 +135,7 @@
 				console.log(contentId);
 			});
 		});
+		// Blanks basic form ajax
 		waitForEl($(".meng_blanks_basic_form"), (e) => {
 			var form = $(".meng_blanks_basic_form");
 			var postId = form.find("#ex_id").val();
@@ -217,16 +218,14 @@
 					);
 				} else {
 					$(".meng_blanks_basic_container").append(
-						`<div class="meng_blanks_basic_final_result">${
-							parseInt(correctCounter) / result.length
+						`<div class="meng_blanks_basic_final_result">Your result is ${
+							correctCounter
+								? (parseInt(correctCounter) / inputs.length) * 100
+								: 0
 						}%</div>`
 					);
 				}
 			});
-		});
-		$(".meng_blanks_basic_form").on("submit", (e) => {
-			e.preventDefault();
-			console.log("jello");
 		});
 	});
 })(jQuery);
