@@ -79,6 +79,16 @@ class Meng_Quiz_Admin_Metabox
 			'side',
 			'high'
 		);
+
+		// Blanks cols
+		add_meta_box(
+			'meng_blanks_cols',
+			__('Blanks Columns', 'meng'),
+			function() {
+				require MENG_QUIZ_DIR . '/admin/partials/meng-metabox-blanks-cols.php';
+			},
+			'meng_blanks_cols'
+		);
 	}
 
 	public static function save($post_id)
@@ -140,12 +150,27 @@ class Meng_Quiz_Admin_Metabox
 			$counter = 0;
 			foreach( $meng_blanks_basic as $blank ) {
 				$counter++;
+				$valid_blanks[$counter]['statement'] = $blank['statement'];
 				preg_match("/\[\w+\]/i", $blank['statement'], $matches);
 				$correct = substr($matches[0], 1, strpos($matches[0], ']')-1);
-				$valid_blanks[$counter]['statement'] = $blank['statement'];
 				$valid_blanks[$counter]['correct'] = trim($correct);
 			}
 			update_post_meta($post_id, 'meng_blanks_basic', $valid_blanks);
+		}
+
+		if(array_key_exists('meng_blanks_cols', $_POST)) {
+			$meng_blanks_cols = $_POST['meng_blanks_cols'];
+			$valid_cols = [];
+			$valid_cols['cols'] = $meng_blanks_cols['cols'];
+			$counter = 0;
+			foreach($meng_blanks_cols['fields'] as $field_id => $field) {
+				$counter++;
+				$valid_cols['fields'][$field_id]['option_string'] = $field;
+				foreach(explode('|', $field) as $f) {
+					$valid_cols['fields'][$field_id]['option_array'][] = trim($f);
+				}
+			}
+			update_post_meta($post_id, 'meng_blanks_cols', $valid_cols);
 		}
 	}
 }

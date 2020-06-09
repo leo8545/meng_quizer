@@ -37,6 +37,10 @@ class Meng_Quiz_Admin
 			'meng_blanks_basic' => [
 				'label' => 'Blanks Basic',
 				'slug' => 'basic_blanks'
+			],
+			'meng_blanks_cols' => [
+				'label' => 'Blanks Columns',
+				'slug' => 'cols_blanks'
 			]
 		];
 

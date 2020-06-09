@@ -28,5 +28,71 @@
 							</div>`;
 			$(".meng-blanks").append(html);
 		});
+		$("#meng-blanks-cols-names-btn").on("click", (e) => {
+			var count = $("#meng-blanks-count-cols").val();
+			if (count >= 2 && count <= 4) {
+				for (var j = 1; j <= count; j++) {
+					if (
+						$(".meng-blanks-cols-names").find(`#meng-blanks-col-${j}`)
+							.length === 0
+					) {
+						var html = `<div id="meng-blanks-col-${j}">
+											<label>Label for column ${j}:</label>
+											<input type="text" required name="meng_blanks_cols[cols][names][${j}]" />
+										</div>`;
+						$(".meng-blanks-cols-names").append(
+							`<div id="meng-blanks-col-${j}">${html}</div>`
+						);
+					}
+					if (count < $(".meng-blanks-cols-names>*").length) {
+						var len = $(".meng-blanks-cols-names>*").length;
+						for (var k = len; k > count; k--) {
+							$(`.meng-blanks-cols-names #meng-blanks-col-${k}`).remove();
+						}
+					}
+				}
+			} else {
+				alert(
+					`Possible values of no. of columns can be between 2 and 4. You entered: ${count}`
+				);
+			}
+		});
+		var counter3 = $(".blanks-cols-fields>*").length;
+		$("#meng_blanks_cols_add_btn").on("click", (e) => {
+			counter3++;
+			var html = `<div class="blanks_cols_field_wrapper meng_quiz_single_field">
+								<div class="meng_counter">${counter3}</div>
+								<label>Options: <i>separated by '|'</i></label>
+								<input type="text" name="meng_blanks_cols[fields][${counter3}]" class="meng_blanks_cols_options" value="" />
+							</div>`;
+			$(".blanks-cols-fields").append(html);
+		});
+		$("body.post-type-meng_blanks_cols form#post").submit((e) => {
+			var blanks_cols_fields = $(".meng_blanks_cols_options");
+			var count = $("#meng-blanks-count-cols").val();
+			$.each(blanks_cols_fields, (i, v) => {
+				var input = $(`input[name="meng_blanks_cols[fields][${i + 1}]"]`);
+				if (v.value.replace(/[^\|]/g, "").length !== count - 1) {
+					e.preventDefault();
+					input.css({
+						border: "1px solid #f00",
+					});
+					input.focus();
+					input
+						.closest(".meng_quiz_single_field")
+						.append(
+							`<div class="meng_admin_error">Please add atleast ${count} fields.</div>`
+						);
+				} else {
+					input.css({
+						border: "unset",
+					});
+					input
+						.closest(".meng_quiz_single_field")
+						.find(".meng_admin_error")
+						.remove();
+				}
+			});
+		});
 	});
 })(jQuery);
