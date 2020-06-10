@@ -80,9 +80,9 @@ class Meng_Quiz_Public
 	}
 
 	/**
-	 * Ajax action callback for Cloze Mcqs
+	 * Ajax action callback for Blanks Basic
 	 * 
-	 * Sends json of cloze mcqs meta of excercise
+	 * Sends json of blanks basic meta of excercise
 	 *
 	 * @return void
 	 */
@@ -91,6 +91,22 @@ class Meng_Quiz_Public
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
 		$excercise = get_post_meta($ex_id, 'meng_blanks_basic', true);
+		echo json_encode($excercise);
+		die();
+	}
+
+	/**
+	 * Ajax action callback for Cloze Mcqs
+	 * 
+	 * Sends json of cloze mcqs meta of excercise
+	 *
+	 * @return void
+	 */
+	public function meng_ajax_blanks_cols_action()
+	{
+		check_ajax_referer('my-special-string', 'security');
+		$ex_id = (int) $_POST['postId'];
+		$excercise = get_post_meta($ex_id, 'meng_blanks_cols', true);
 		echo json_encode($excercise);
 		die();
 	}
@@ -175,4 +191,20 @@ class Meng_Quiz_Public
 		$output = ob_get_clean();
 		return $output;
 	}
+
+	public static function meng_blanks_cols_shortcode_callback($atts)
+	{
+		$atts = shortcode_atts([
+			'id' => 0
+		], $atts, 'meng_blanks_cols');
+
+		ob_start();
+
+		require MENG_QUIZ_DIR . 'public/templates/meng-blanks-cols.php';
+
+		$output = ob_get_clean();
+		return $output;
+	}
+
+
 }

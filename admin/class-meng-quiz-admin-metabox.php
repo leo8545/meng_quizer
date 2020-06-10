@@ -162,11 +162,17 @@ class Meng_Quiz_Admin_Metabox
 			$meng_blanks_cols = $_POST['meng_blanks_cols'];
 			$valid_cols = [];
 			$valid_cols['cols'] = $meng_blanks_cols['cols'];
-			$counter = 0;
 			foreach($meng_blanks_cols['fields'] as $field_id => $field) {
-				$counter++;
+				$counter = 0;
 				$valid_cols['fields'][$field_id]['option_string'] = $field;
 				foreach(explode('|', $field) as $f) {
+					if(preg_match_all("/\[\w+\]/", trim($f), $matches) > 0) {
+						$valid_cols['fields'][$field_id]['options_input'][$counter] = str_replace(['[', ']'], '', $matches[0][0]);
+					} else {
+						$valid_cols['fields'][$field_id]['options_normal'][$counter] = trim($f);
+					}
+					$counter++;
+					// @todo remove this
 					$valid_cols['fields'][$field_id]['option_array'][] = trim($f);
 				}
 			}

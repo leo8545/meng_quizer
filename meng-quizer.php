@@ -93,11 +93,14 @@ final class Meng_Quizer
 		add_action('wp_ajax_action_meng_cloze', [$public, 'meng_ajax_cloze_action']);
 		// 3. for blanks basic
 		add_action('wp_ajax_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
+		// 3. for blanks cols
+		add_action('wp_ajax_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);
 		add_shortcode('meng_mcqs_cloze', [$public, 'meng_mcqs_cloze_shortcode_callback']);
 		add_shortcode('meng_blanks_basic', [$public, 'meng_blanks_basic_shortcode_callback']);
+		add_shortcode('meng_blanks_cols', [$public, 'meng_blanks_cols_shortcode_callback']);
 	}
 
 	/**

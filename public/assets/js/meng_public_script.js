@@ -227,5 +227,49 @@
 				}
 			});
 		});
+		var meng_blanks_cols_result = {};
+		waitForEl("form.meng_blanks_cols_form", (e) => {
+			var postId = parseInt($("input#ex_id").val());
+			$.ajax({
+				data: {
+					action: "action_meng_blanks_cols",
+					security: ajaxObject.security,
+					postId,
+				},
+				method: "post",
+				url: ajaxObject.ajax_url,
+			}).success((_response) => {
+				meng_blanks_cols_result = JSON.parse(_response);
+				// console.log(meng_blanks_cols_result);
+			});
+		});
+		$("form.meng_blanks_cols_form").submit((e) => {
+			e.preventDefault();
+			var inputs = $("input.meng_blanks_cols_input");
+			var correctCounter = 0;
+			$.each(inputs, (i, v) => {
+				var field_id = parseInt(v.getAttribute("data-field_id"));
+				var option_id = parseInt(v.getAttribute("data-option_id"));
+				if (
+					meng_blanks_cols_result.fields[field_id].options_input[option_id] ===
+					v.value.toLowerCase().trim()
+				) {
+					correctCounter++;
+					v.classList.remove("meng-wrong-answer");
+					v.classList.add("meng-correct-answer");
+				} else {
+					v.classList.remove("meng-correct-answer");
+					v.classList.add("meng-wrong-answer");
+				}
+			});
+			var _result = (correctCounter / inputs.length) * 100;
+			var _result_html = `Your result is: ${_result}%`;
+			var parent = $("form.meng_blanks_cols_form").closest(".meng-blanks-cols");
+			if (parent.find(".meng_result").length === 0) {
+				parent.append(`<div class="meng_result">${_result_html}</div>`);
+			} else {
+				parent.find(".meng_result").text(_result_html);
+			}
+		});
 	});
 })(jQuery);
