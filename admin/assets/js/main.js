@@ -62,7 +62,7 @@
 			counter3++;
 			var html = `<div class="blanks_cols_field_wrapper meng_quiz_single_field">
 								<div class="meng_counter">${counter3}</div>
-								<label>Options: <i>separated by '|'</i></label>
+								<label>Enter the options:</label>
 								<input type="text" name="meng_blanks_cols[fields][${counter3}]" class="meng_blanks_cols_options" value="" />
 							</div>`;
 			$(".blanks-cols-fields").append(html);

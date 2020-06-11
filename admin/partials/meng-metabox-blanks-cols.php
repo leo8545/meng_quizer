@@ -12,16 +12,18 @@ $count = 0;
 if(@$blanks && count($blanks) > 0) {
 	$count = (int) $blanks['cols']['count'];
 }
-echo '<pre>';
-print_r($blanks);
-echo '</pre>';
 ?>
 
 <div class="meng_blanks_cols_wrapper">
+	<div class="meng-description">
+		<p class="description">Options should be separated by |. The field that should be appeared as input field should be enclosed in brackets e.g. apple | [orange] | [mango]</p>
+	</div>
 	<div class="blanks-cols-count">
 		<label for="meng-blanks-count-cols">No. of columns:</label>
 		<input type="number" required min="2" max="4" name="meng_blanks_cols[cols][count]" id="meng-blanks-count-cols" value="<?php echo $count ? $count : ''; ?>"/>
-		<span id="meng-blanks-cols-names-btn">click to generate columns</span>
+		<div class="btn meng_add_btn_secondary">
+			<span id="meng-blanks-cols-names-btn">Click to generate columns</span>
+		</div>
 		<div class="meng-blanks-cols-names">
 			<?php for( $i = 1; $i <= $count; $i++ ): ?>
 				<div id="meng-blanks-col-<?php echo $i ?>">
@@ -40,7 +42,7 @@ echo '</pre>';
 		?>
 			<div class="blanks_cols_field_wrapper meng_quiz_single_field">
 				<div class="meng_counter"><?php echo $counter ?></div>
-				<label>Options: <i>separated by '|'</i></label>
+				<label>Enter the options:</label>
 				<input type="text" name="meng_blanks_cols[fields][<?php echo $counter ?>]" class="meng_blanks_cols_options" value="<?php echo $blank['option_string'] ?>" />
 			</div>
 		<?php 

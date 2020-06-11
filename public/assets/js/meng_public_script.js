@@ -110,7 +110,6 @@
 			}
 		});
 		// Meng Cloze Tabs
-		// console.log($(".meng_tabs_wrapper .meng_cloze_tab_content"));
 		waitForEl($(".meng_tabs_wrapper"), () => {
 			$(".meng_tabs_wrapper .meng_cloze_tab_content")[0].classList.add(
 				"meng-active-tab-content"
@@ -240,7 +239,6 @@
 				url: ajaxObject.ajax_url,
 			}).success((_response) => {
 				meng_blanks_cols_result = JSON.parse(_response);
-				// console.log(meng_blanks_cols_result);
 			});
 		});
 		$("form.meng_blanks_cols_form").submit((e) => {
@@ -269,6 +267,20 @@
 				parent.append(`<div class="meng_result">${_result_html}</div>`);
 			} else {
 				parent.find(".meng_result").text(_result_html);
+			}
+		});
+		var counterToggle = 0;
+		$(".meng-show-answers-btn").on("click", (e) => {
+			counterToggle++;
+			var answersWrapper = $(".meng-show-answers-btn").closest(
+				".meng-answers-wrapper"
+			);
+			if (counterToggle % 2 !== 0) {
+				answersWrapper.find(".meng-answers-table").show();
+				e.target.textContent = "Hide answers";
+			} else {
+				answersWrapper.find(".meng-answers-table").hide();
+				e.target.textContent = "Show answers";
 			}
 		});
 	});

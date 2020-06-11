@@ -46,6 +46,26 @@ if( !is_null($excercise) && $excercise->post_type === 'meng_blanks_cols' ) {
 		<input type="hidden" name="ex_id" value="<?php echo $excercise->ID ?>" id="ex_id">
 		<input type="submit" name="meng_mcqs_submit" id="meng_mcqs_submit" value="Check">
 	</form>
+	<div class="meng-answers-wrapper">
+		<div class="meng-show-answers-btn"><p>Show answers</p></div>
+		<table style="display:none;" class="meng-answers-table">
+			<?php foreach( $fields as $field ) : ?>
+				<tr>
+					<?php foreach($field['option_array'] as $id => $opt) : ?>
+						<td>
+							<?php
+							$_opt = '<span>' . $opt . '</span>';
+							if(strpos( $opt, '[' ) !== false) {
+								$_opt = '<span><b>' . $field['options_input'][$id] . '</b></span>';
+							}
+							echo $_opt;
+							?>
+						</td>
+					<?php endforeach; ?>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+	</div>
 	</div>
 	
 	<?php
