@@ -41,12 +41,16 @@ class Meng_Quiz_Admin
 			'meng_blanks_cols' => [
 				'label' => 'Blanks Columns',
 				'slug' => 'cols_blanks'
+			],
+			'meng_multi_selector' => [
+				'label' => 'Multi Selectors',
+				'slug' => 'multi_selector'
 			]
 		];
 
 		foreach( $quiz_types as $id => $args ) {
 			register_post_type($id, [
-				'labels'				=> 		['name' => $args['label']],
+				'labels'						=> 		['name' => $args['label']],
 				'public'             	=> 		true,
 				'publicly_queryable' 	=> 		true,
 				'show_ui'            	=> 		true,
@@ -56,6 +60,7 @@ class Meng_Quiz_Admin
 				'capability_type'    	=> 		'post',
 				'has_archive'        	=> 		true,
 				'hierarchical'       	=> 		false,
+				'menu_icon'					=>			'dashicons-lightbulb',
 				'menu_position'      	=> 		null,
 				'supports'           	=> 		[ 'title', 'editor', 'thumbnail' ],
 			]);
@@ -63,12 +68,21 @@ class Meng_Quiz_Admin
 
 	}
 
+	/**
+	 * Create and populate custom columns: Shortcode and Count
+	 *
+	 * @param string $func
+	 * @param array $args
+	 * @return mixed
+	 */
 	public static function __callStatic($func, $args)
 	{
 		$post_columns = [
-			'meng_sortables_basic_post_columns',
+			'meng_sortables_basic_post_columns', // hooked function_name
 			'meng_mcqs_basic_post_columns',
-			'meng_mcqs_cloze_post_columns'
+			'meng_mcqs_cloze_post_columns',
+			'meng_blanks_cols_post_columns',
+			'meng_multi_selector_post_columns'
 		];
 		$column_id = array_search($func, $post_columns);
 		if( $column_id !== false ) {
@@ -76,16 +90,18 @@ class Meng_Quiz_Admin
 			return [
 				'cb' => $columns['cb'],
 				'title' => $columns['title'],
-				'meng_count' => 'No. of ' . explode('_', $post_columns[$column_id])[1],
+				'meng_count' => apply_filters('meng_admin_post_column_meng_count_label', 'No. of ' . explode('_', $post_columns[$column_id])[1], $post_columns[$column_id]),
 				'meng_shortcode' => 'Shortcode',
 				'date' => $columns['date']
 			];
 		}
 
 		$custom_columns = [
-			'meng_mcqs_basic_post_custom_column' => 'meng_mcqs', // function_name => post_meta_field_id
+			'meng_mcqs_basic_post_custom_column' => 'meng_mcqs', // hooked function_name => post_meta_field_id
 			'meng_mcqs_cloze_post_custom_column' => 'meng_mcqs_cloze',
 			'meng_sortables_basic_post_custom_column' => 'meng_sortables',
+			'meng_blanks_cols_post_custom_column' => 'meng_blanks_cols',
+			'meng_multi_selector_post_custom_column' => 'meng_multi_selector',
 		];
 		$custom_column_index = array_search($func, array_keys($custom_columns));
 		if( $custom_column_index !== false ) {

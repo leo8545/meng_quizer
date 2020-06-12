@@ -89,6 +89,16 @@ class Meng_Quiz_Admin_Metabox
 			},
 			'meng_blanks_cols'
 		);
+
+		// Multi selectors
+		add_meta_box(
+			'meng_multi_selector',
+			__('Multi Selectors Question Box', 'meng'),
+			function() {
+				require MENG_QUIZ_DIR . '/admin/partials/meng-metabox-multi-selector.php';
+			},
+			'meng_multi_selector'
+		);
 	}
 
 	public static function save($post_id)
@@ -177,6 +187,27 @@ class Meng_Quiz_Admin_Metabox
 				}
 			}
 			update_post_meta($post_id, 'meng_blanks_cols', $valid_cols);
+		}
+
+		if( array_key_exists('meng_multi_selector', $_POST) ) {
+			$meng_multi_selectors = $_POST['meng_multi_selector'];
+			$valid_questions = [];
+			foreach($meng_multi_selectors as $id => $question) {
+				if(empty($meng_multi_selectors[$id]['statement'])) continue;
+				$valid_questions[$id]['qid'] = $id;
+				$valid_questions[$id]['statement'] = $meng_multi_selectors[$id]['statement'];
+				$valid_questions[$id]['options']['string'] = $meng_multi_selectors[$id]['options'];
+				$valid_questions[$id]['options']['array'] = array_map( 'trim', explode('|', $meng_multi_selectors[$id]['options']) );
+				
+				foreach( explode('|', $meng_multi_selectors[$id]['options']) as $option_id => $option ) {
+					$option = trim($option);
+					if(preg_match_all("/\[\w+\]/", $option, $matches ) > 0) {
+						$valid_questions[$id]['options']['correct'][$option_id] = substr($option, 1, strpos($option, ']') - 1 );
+					}
+				}
+
+			}
+			update_post_meta($post_id, 'meng_multi_selector', $valid_questions);
 		}
 	}
 }

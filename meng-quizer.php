@@ -74,6 +74,7 @@ final class Meng_Quizer
 		require MENG_QUIZ_DIR . 'admin/class-meng-quiz-admin.php';
 		require MENG_QUIZ_DIR . 'admin/class-meng-quiz-admin-metabox.php';
 		require MENG_QUIZ_DIR . 'public/class-meng-quiz-public.php';
+		require MENG_QUIZ_DIR . 'inc/functions.php';
 	}
 
 	/**
@@ -114,12 +115,22 @@ final class Meng_Quizer
 		add_action('admin_enqueue_scripts', [$admin, 'enqueue_styles']);
 		add_action('admin_enqueue_scripts', [$admin, 'enqueue_scripts']);
 		add_action('init', [$admin, 'register_post_types']);
+		// Custom columns for quiz types
+		// 1. Basic sortables
 		add_filter('manage_meng_sortables_basic_posts_columns', ['Meng_Quiz_Admin', 'meng_sortables_basic_post_columns'], 10, 1);
 		add_action('manage_meng_sortables_basic_posts_custom_column', ['Meng_Quiz_Admin', 'meng_sortables_basic_post_custom_column'], 10, 2);
+		// 2. Basic Mcqs
 		add_filter('manage_meng_mcqs_basic_posts_columns', ['Meng_Quiz_Admin', 'meng_mcqs_basic_post_columns'], 10, 1);
 		add_action('manage_meng_mcqs_basic_posts_custom_column', ['Meng_Quiz_Admin', 'meng_mcqs_basic_post_custom_column'], 10, 2);
+		// 3. Cloze Mcqs
 		add_filter('manage_meng_mcqs_cloze_posts_columns', ['Meng_Quiz_Admin', 'meng_mcqs_cloze_post_columns'], 10, 1);
 		add_action('manage_meng_mcqs_cloze_posts_custom_column', ['Meng_Quiz_Admin', 'meng_mcqs_cloze_post_custom_column'], 10, 2);
+		// 4. Blanks Columns
+		add_filter('manage_meng_blanks_cols_posts_columns', ['Meng_Quiz_Admin', 'meng_blanks_cols_post_columns'], 10, 1);
+		add_action('manage_meng_blanks_cols_posts_custom_column', ['Meng_Quiz_Admin', 'meng_blanks_cols_post_custom_column'], 10, 2);
+		// 5. Multi Selectors
+		add_filter('manage_meng_multi_selector_posts_columns', ['Meng_Quiz_Admin', 'meng_multi_selector_post_columns'], 10, 1);
+		add_action('manage_meng_multi_selector_posts_custom_column', ['Meng_Quiz_Admin', 'meng_multi_selector_post_custom_column'], 10, 2);
 		// Class: Metabox
 		add_action('add_meta_boxes', ['Meng_Quiz_Admin_Metabox', 'add']);
 		add_action('save_post', ['Meng_Quiz_Admin_Metabox', 'save']);

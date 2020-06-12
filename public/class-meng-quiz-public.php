@@ -96,9 +96,9 @@ class Meng_Quiz_Public
 	}
 
 	/**
-	 * Ajax action callback for Cloze Mcqs
+	 * Ajax action callback for Blanks cols
 	 * 
-	 * Sends json of cloze mcqs meta of excercise
+	 * Sends json of blanks cols meta of excercise
 	 *
 	 * @return void
 	 */
@@ -205,6 +205,5 @@ class Meng_Quiz_Public
 		$output = ob_get_clean();
 		return $output;
 	}
-
 
 }

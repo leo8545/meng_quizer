@@ -94,5 +94,21 @@
 				}
 			});
 		});
+		var counter4 = $(".meng-questions>*").length;
+		$("#meng_multi_selector_add_btn").on("click", (e) => {
+			counter4++;
+			var html = `<div class="meng_quiz_single_field">
+								<div class="meng_counter"><strong>Question: ${counter4}</strong></div>
+								<div class="meng-form-field">
+									<label for="meng_multi_selector_statement-${counter4}">Statement</label>
+									<input type="text" name="meng_multi_selector[${counter4}][statement]" id="meng_multi_selector_statement-${counter4}" value="">
+								</div>
+								<div class="meng-form-field">
+									<label for="meng_multi_selector_options-${counter4}">Options</label>
+									<input type="text" name="meng_multi_selector[${counter4}][options]" id="meng_multi_selector_options-${counter4}" value="">
+								</div>
+							</div>`;
+			$(".meng-questions").append(html);
+		});
 	});
 })(jQuery);
