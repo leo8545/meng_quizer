@@ -197,10 +197,10 @@ class Meng_Quiz_Admin_Metabox
 				$valid_questions[$id]['qid'] = $id;
 				$valid_questions[$id]['statement'] = $meng_multi_selectors[$id]['statement'];
 				$valid_questions[$id]['options']['string'] = $meng_multi_selectors[$id]['options'];
-				$valid_questions[$id]['options']['array'] = array_map( 'trim', explode('|', $meng_multi_selectors[$id]['options']) );
 				
 				foreach( explode('|', $meng_multi_selectors[$id]['options']) as $option_id => $option ) {
 					$option = trim($option);
+					$valid_questions[$id]['options']['array'][] = str_replace(['[', ']'], '', $option);
 					if(preg_match_all("/\[\w+\]/", $option, $matches ) > 0) {
 						$valid_questions[$id]['options']['correct'][$option_id] = substr($option, 1, strpos($option, ']') - 1 );
 					}

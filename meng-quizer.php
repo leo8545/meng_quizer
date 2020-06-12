@@ -102,6 +102,7 @@ final class Meng_Quizer
 		add_shortcode('meng_mcqs_cloze', [$public, 'meng_mcqs_cloze_shortcode_callback']);
 		add_shortcode('meng_blanks_basic', [$public, 'meng_blanks_basic_shortcode_callback']);
 		add_shortcode('meng_blanks_cols', [$public, 'meng_blanks_cols_shortcode_callback']);
+		add_shortcode('meng_multi_selector', [$public, 'meng_multi_selector_shortcode_callback']);
 	}
 
 	/**

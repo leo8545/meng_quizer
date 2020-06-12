@@ -283,5 +283,17 @@
 				e.target.textContent = "Show answers";
 			}
 		});
+		waitForEl(".meng-multi-selector-wrapper", (e) => {
+			$(".meng-form").submit((e) => {
+				e.preventDefault();
+				var inputs = $("input[type=checkbox]:checked");
+				var answers = [];
+				$.each(inputs, (index, input) => {
+					var qid = input.getAttribute("data-qid");
+					var optionId = input.getAttribute("data-option_id");
+				});
+				console.log(answers);
+			});
+		});
 	});
 })(jQuery);

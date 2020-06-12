@@ -206,4 +206,18 @@ class Meng_Quiz_Public
 		return $output;
 	}
 
+	public static function meng_multi_selector_shortcode_callback($atts)
+	{
+		$atts = shortcode_atts([
+			'id' => 0
+		], $atts, 'meng_multi_selector');
+
+		ob_start();
+
+		require MENG_QUIZ_DIR . 'public/templates/meng-multi-selector.php';
+
+		$output = ob_get_clean();
+		return $output;
+	}
+
 }
