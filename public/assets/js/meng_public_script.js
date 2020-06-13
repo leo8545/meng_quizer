@@ -395,19 +395,37 @@
 				} else {
 					$(".meng-loading").text("Something went wrong!");
 				}
-				console.log(response);
 			});
-			// $(".meng_true_false_input").on("click", (e) => {
-			// 	var li = e.target.parentNode.parentNode;
-			// 	var qid = li.getAttribute("data-qid");
-			// 	if (response) {
-			// 	}
-			// 	console.log(qid);
-			// });
+			var userCorrectAnswers = new Set();
 			$(".meng-form").submit((e) => {
 				e.preventDefault();
 				var inputs = $(".meng_true_false_input");
-				$.each(inputs, (index, input) => {});
+				$.each(inputs, (index, input) => {
+					if (input.checked) {
+						var li = input.parentNode.parentNode;
+						var qid = parseInt(li.getAttribute("data-qid"));
+						if (response) {
+							if (parseInt(response[qid].answer) === parseInt(input.value)) {
+								userCorrectAnswers.add(qid);
+							} else {
+								userCorrectAnswers.delete(qid);
+							}
+						}
+					}
+				});
+				var result = response
+					? (userCorrectAnswers.size / Object.keys(response).length) * 100
+					: 0;
+				result = Math.round((result + Number.EPSILON) * 100) / 100;
+				var resultText = `Your result is: ${result}%`;
+				var resultWrapper = $(".meng-true-false-wrapper .meng-result");
+				if (resultWrapper.length) {
+					resultWrapper.text(resultText);
+				} else {
+					$(".meng-true-false-wrapper").append(
+						`<div class="meng-result">${resultText}</div>`
+					);
+				}
 			});
 		});
 	});
