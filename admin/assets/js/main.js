@@ -110,5 +110,16 @@
 							</div>`;
 			$(".meng-questions").append(html);
 		});
+		var counter5 = $(".meng-questions>*").length;
+		$("span#meng_true_false_add_btn").on("click", (e) => {
+			counter5++;
+			var html = `<div class="meng_quiz_single_field">
+								<div class="meng_counter"><strong>${counter5}</strong></div>
+								<input type="text" name="meng_true_false[${counter5}][statement]" value="" />
+								<label><input type="radio" name="meng_true_false[${counter5}][answer]" value="1" />True</label>
+								<label><input type="radio" name="meng_true_false[${counter5}][answer]" value="0" />False</label>
+							</div>`;
+			$(".meng-questions").append(html);
+		});
 	});
 })(jQuery);

@@ -9,7 +9,7 @@ if( @$excercise ) : ?>
 		<ol class="meng-list meng-msel-list">
 			<?php foreach($excercise as $ex) : ?>
 				<li class="meng-field-group" id="meng-msel-<?php echo $ex["qid"] ?>">
-					<label for=""><?php echo $ex['statement']; ?></label>
+					<label><?php echo $ex['statement']; ?></label>
 					<div class="meng-options">
 						<?php foreach($ex['options']['array'] as $option_index => $option) : ?>
 							<label for="meng_multi_selector_option-<?php echo $ex['qid'] . '-' . $option_index ?>"><input type="checkbox" name="meng_multi_selector[<?php echo $ex['qid'] ?>][<?php echo $option_index ?>]" data-qid="<?php echo $ex['qid'] ?>" data-option_id="<?php echo $option_index ?>" id="meng_multi_selector_option-<?php echo $ex['qid'] . '-' . $option_index ?>" value="<?php echo $option ?>"><?php echo $option ?></label>

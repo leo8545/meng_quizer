@@ -128,6 +128,22 @@ class Meng_Quiz_Public
 	}
 
 	/**
+	 * Ajax action callback for Blanks cols
+	 * 
+	 * Sends json of blanks cols meta of excercise
+	 *
+	 * @return void
+	 */
+	public function meng_ajax_true_false_action()
+	{
+		check_ajax_referer('my-special-string', 'security');
+		$ex_id = (int) $_POST['postId'];
+		$excercise = get_post_meta($ex_id, 'meng_true_false', true);
+		echo json_encode($excercise);
+		die();
+	}
+
+	/**
 	 * Callback for shortcode: meng_mcqs_basic
 	 *
 	 * @param array $atts
@@ -231,6 +247,20 @@ class Meng_Quiz_Public
 		ob_start();
 
 		require MENG_QUIZ_DIR . 'public/templates/meng-multi-selector.php';
+
+		$output = ob_get_clean();
+		return $output;
+	}
+
+	public static function meng_true_false_shortcode_callback($atts)
+	{
+		$atts = shortcode_atts([
+			'id' => 0
+		], $atts, 'meng_true_false');
+
+		ob_start();
+
+		require MENG_QUIZ_DIR . 'public/templates/meng-true-false.php';
 
 		$output = ob_get_clean();
 		return $output;

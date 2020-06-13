@@ -99,6 +99,16 @@ class Meng_Quiz_Admin_Metabox
 			},
 			'meng_multi_selector'
 		);
+
+		// True / False
+		add_meta_box(
+			'meng_true_false',
+			__('True False Question Box', 'meng'),
+			function() {
+				require MENG_QUIZ_DIR . '/admin/partials/meng-metabox-true-false.php';
+			},
+			'meng_true_false'
+		);
 	}
 
 	public static function save($post_id)
@@ -208,6 +218,12 @@ class Meng_Quiz_Admin_Metabox
 
 			}
 			update_post_meta($post_id, 'meng_multi_selector', $valid_questions);
+		}
+
+		if( array_key_exists( 'meng_true_false', $_POST ) ) {
+			$meng_true_false = $_POST['meng_true_false'];
+			$valid_questions = $meng_true_false;
+			update_post_meta($post_id, 'meng_true_false', $valid_questions);
 		}
 	}
 }

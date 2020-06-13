@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name: MENG Quizer
  * Plugin URI:  
- * Description: This plugin includes different types of quizes like: Mcqs, Sortables which can be shown via shortcodes
+ * Description: This plugin includes different types of quizes like: Basic mcqs, Cloze mcqs, Sortables, Blanks, Multi selectors, True/false which can be shown via shortcodes. Please see Meng Quizer on your admin menu for further instruction, after activating the plugin.
  * Version:     1.0.0
  * Author:      Sharjeel Ahmad
  * Author URI:  https://github.com/leo8545
@@ -94,10 +94,12 @@ final class Meng_Quizer
 		add_action('wp_ajax_action_meng_cloze', [$public, 'meng_ajax_cloze_action']);
 		// 3. for blanks basic
 		add_action('wp_ajax_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
-		// 3. for blanks cols
+		// 4. for blanks cols
 		add_action('wp_ajax_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
-		// 3. for blanks cols
+		// 5. for blanks cols
 		add_action('wp_ajax_action_meng_multi_selector', [$public, 'meng_ajax_multi_selector_action']);
+		// 6. for true false
+		add_action('wp_ajax_action_meng_true_false', [$public, 'meng_ajax_true_false_action']);
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);
@@ -105,6 +107,7 @@ final class Meng_Quizer
 		add_shortcode('meng_blanks_basic', [$public, 'meng_blanks_basic_shortcode_callback']);
 		add_shortcode('meng_blanks_cols', [$public, 'meng_blanks_cols_shortcode_callback']);
 		add_shortcode('meng_multi_selector', [$public, 'meng_multi_selector_shortcode_callback']);
+		add_shortcode('meng_true_false', [$public, 'meng_true_false_shortcode_callback']);
 	}
 
 	/**
@@ -134,6 +137,9 @@ final class Meng_Quizer
 		// 5. Multi Selectors
 		add_filter('manage_meng_multi_selector_posts_columns', ['Meng_Quiz_Admin', 'meng_multi_selector_post_columns'], 10, 1);
 		add_action('manage_meng_multi_selector_posts_custom_column', ['Meng_Quiz_Admin', 'meng_multi_selector_post_custom_column'], 10, 2);
+		// 6. True / False
+		add_filter('manage_meng_true_false_posts_columns', ['Meng_Quiz_Admin', 'meng_true_false_post_columns'], 10, 1);
+		add_action('manage_meng_true_false_posts_custom_column', ['Meng_Quiz_Admin', 'meng_true_false_post_custom_column'], 10, 2);
 		// Class: Metabox
 		add_action('add_meta_boxes', ['Meng_Quiz_Admin_Metabox', 'add']);
 		add_action('save_post', ['Meng_Quiz_Admin_Metabox', 'save']);

@@ -283,6 +283,11 @@
 				e.target.textContent = "Show answers";
 			}
 		});
+		/**
+		 * Quiz type: meng_multi_selectors
+		 *
+		 * @since 1.0.0
+		 */
 		waitForEl(".meng-multi-selector-wrapper", (e) => {
 			var response = {};
 			// Hide everything and adds loading div
@@ -359,6 +364,50 @@
 						);
 					}
 				}
+			});
+		});
+		/**
+		 * Quiz type: meng_true_false
+		 *
+		 * @since 1.0.0
+		 */
+		waitForEl(".meng-true-false-wrapper", (e) => {
+			var response = {};
+			// Hide everything and adds loading div
+			$(".meng-true-false-wrapper>*:not(.meng-loading)").hide();
+			$(".meng-true-false-wrapper").prepend(
+				"<div class='meng-loading'>Loading...</div>"
+			);
+			$.ajax({
+				data: {
+					action: "action_meng_true_false",
+					security: ajaxObject.security,
+					postId: $("#ex_id").val(),
+				},
+				url: ajaxObject.ajax_url,
+				method: "post",
+			}).success((_response) => {
+				response = JSON.parse(_response);
+				if (response) {
+					// Removes loading and show everything
+					$(".meng-loading").remove();
+					$(".meng-true-false-wrapper>*").show();
+				} else {
+					$(".meng-loading").text("Something went wrong!");
+				}
+				console.log(response);
+			});
+			// $(".meng_true_false_input").on("click", (e) => {
+			// 	var li = e.target.parentNode.parentNode;
+			// 	var qid = li.getAttribute("data-qid");
+			// 	if (response) {
+			// 	}
+			// 	console.log(qid);
+			// });
+			$(".meng-form").submit((e) => {
+				e.preventDefault();
+				var inputs = $(".meng_true_false_input");
+				$.each(inputs, (index, input) => {});
 			});
 		});
 	});
