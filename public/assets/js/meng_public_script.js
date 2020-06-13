@@ -284,15 +284,81 @@
 			}
 		});
 		waitForEl(".meng-multi-selector-wrapper", (e) => {
+			var response = {};
+			// Hide everything and adds loading div
+			$(".meng-multi-selector-wrapper>*:not(.meng-loading)").hide();
+			$(".meng-multi-selector-wrapper").prepend(
+				"<div class='meng-loading'>Loading...</div>"
+			);
+			$.ajax({
+				data: {
+					action: "action_meng_multi_selector",
+					postId: $(".meng-form #ex_id").val(),
+					security: ajaxObject.security,
+				},
+				url: ajaxObject.ajax_url,
+				method: "post",
+			})
+				.success((_response) => {
+					response = JSON.parse(_response);
+					if (response) {
+						// Removes loading and show everything
+						$(".meng-loading").remove();
+						$(".meng-multi-selector-wrapper>*").show();
+					} else {
+						$(".meng-loading").text("Something went wrong!");
+					}
+				})
+				.error((err) => {
+					$(".meng-loading").text("Server error");
+				});
+			var meng_multi_selector_inputs = $(".meng-form input[type=checkbox]");
+			var userCorrectAnswers = [];
+			meng_multi_selector_inputs.on("click", (e) => {
+				var qid = e.target.getAttribute("data-qid");
+				var optionId = e.target.getAttribute("data-option_id");
+				var label = e.target.parentNode;
+				if (response) {
+					if (response[qid].options.correct[optionId] === e.target.value) {
+						label.classList.add("meng-msel-correct-answer");
+						// userCorrectAnswers[qid] = e.target.value;
+						// userCorrectAnswers++;
+						userCorrectAnswers.push(qid + optionId);
+					} else {
+						label.classList.add("meng-msel-wrong-answer");
+					}
+				}
+				if (!e.target.checked) {
+					var i = userCorrectAnswers.indexOf(qid + optionId);
+					if (i > -1) {
+						userCorrectAnswers.splice(i);
+					}
+					label.classList.remove(
+						"meng-msel-correct-answer",
+						"meng-msel-wrong-answer"
+					);
+				}
+			});
 			$(".meng-form").submit((e) => {
 				e.preventDefault();
-				var inputs = $("input[type=checkbox]:checked");
-				var answers = [];
-				$.each(inputs, (index, input) => {
-					var qid = input.getAttribute("data-qid");
-					var optionId = input.getAttribute("data-option_id");
-				});
-				console.log(answers);
+				var totalCorrectAnswers = 0;
+				if (response) {
+					$.each(response, (i, q) => {
+						totalCorrectAnswers += Object.keys(q.options.correct).length;
+					});
+					var result = userCorrectAnswers
+						? (userCorrectAnswers.length / totalCorrectAnswers) * 100
+						: 0;
+					const resultWrapper = $(".meng-multi-selector-wrapper .meng-result");
+					var resultText = `Your result is ${result}%`;
+					if (resultWrapper.length) {
+						resultWrapper.text(resultText);
+					} else {
+						$(".meng-multi-selector-wrapper").append(
+							`<div class="meng-result">${resultText}</div>`
+						);
+					}
+				}
 			});
 		});
 	});

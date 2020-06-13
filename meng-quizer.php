@@ -96,6 +96,8 @@ final class Meng_Quizer
 		add_action('wp_ajax_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
 		// 3. for blanks cols
 		add_action('wp_ajax_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
+		// 3. for blanks cols
+		add_action('wp_ajax_action_meng_multi_selector', [$public, 'meng_ajax_multi_selector_action']);
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);

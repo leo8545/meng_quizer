@@ -112,6 +112,22 @@ class Meng_Quiz_Public
 	}
 
 	/**
+	 * Ajax action callback for Blanks cols
+	 * 
+	 * Sends json of blanks cols meta of excercise
+	 *
+	 * @return void
+	 */
+	public function meng_ajax_multi_selector_action()
+	{
+		check_ajax_referer('my-special-string', 'security');
+		$ex_id = (int) $_POST['postId'];
+		$excercise = get_post_meta($ex_id, 'meng_multi_selector', true);
+		echo json_encode($excercise);
+		die();
+	}
+
+	/**
 	 * Callback for shortcode: meng_mcqs_basic
 	 *
 	 * @param array $atts
