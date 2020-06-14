@@ -12,7 +12,7 @@ if( !is_null($post) && $post->post_type === 'meng_mcqs_cloze' ) {
 	$options = array_keys($cloze);
 	?>
 
-	<div class="meng_mcqs_cloze_container" data-excercise="<?php echo $post->ID ?>">
+	<div class="meng-mcqs-cloze-wrapper" data-excercise="<?php echo $post->ID ?>">
 
 		<?php do_action('meng_cloze_before_content') ?>
 
@@ -42,8 +42,8 @@ if( !is_null($post) && $post->post_type === 'meng_mcqs_cloze' ) {
 
 		<?php do_action('meng_cloze_before_answer_wrapper') ?>
 
-		<div class="meng_answers_wrapper">
-			<p class="meng_toggle_sibling">show answers</p>
+		<div class="meng-answers-wrapper">
+			<p class="meng-show-answers-btn">show answers</p>
 			<div class="meng_cloze_options_desc meng_tabs_wrapper" style="display: none;">
 				<div class="meng_tabs_headings">
 					<?php foreach( $options as $option ): ?>

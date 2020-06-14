@@ -69,11 +69,10 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public function meng_ajax_cloze_action()
+	public function meng_ajax_mcqs_cloze_action()
 	{
 		check_ajax_referer('my-special-string', 'security');
-		$post = $_POST['postData'];
-		$ex_id = (int) $post['postId'];
+		$ex_id = (int) $_POST['postId'];
 		$excercise = get_post_meta($ex_id, 'meng_mcqs_cloze', true);
 		echo json_encode($excercise);
 		die();

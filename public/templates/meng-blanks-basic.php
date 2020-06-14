@@ -9,7 +9,7 @@ $excercise = get_post((int) $atts['id']);
 
 if( !is_null($excercise) && $excercise->post_type === 'meng_blanks_basic' ) {
 	$blanks = get_post_meta($excercise->ID, 'meng_blanks_basic', true ); ?>
-	<div class="meng_blanks_basic_container">
+	<div class="meng-blanks-basic-wrapper">
 		<div class="meng_blanks_options">
 			<?php
 			$correct_options = [];
@@ -21,7 +21,7 @@ if( !is_null($excercise) && $excercise->post_type === 'meng_blanks_basic' ) {
 			?>
 			<p><?php echo $correct_options_string; ?></p>
 		</div>
-		<form method="post" class="meng_blanks_basic_form" id="meng_blanks_basic_form-<?php echo $excercise->ID ?>">
+		<form method="post" class="meng_blanks_basic_form meng-form" id="meng_blanks_basic_form-<?php echo $excercise->ID ?>">
 			<table>
 				<tbody>
 					<?php 
@@ -35,7 +35,7 @@ if( !is_null($excercise) && $excercise->post_type === 'meng_blanks_basic' ) {
 								<?php
 								$_prepared_statement = str_replace(
 									"[" . $blank['correct'] . "]", 
-									"<input type='text' name='meng_blanks_basic[$counter]' data-id='$counter' class='meng_blanks_basic_input'/>", 
+									"<input type='text' name='meng_blanks_basic[$counter]' data-qid='$counter' class='meng_blanks_basic_input'/>", 
 									$blank['statement']);
 								?>
 								<p><?php echo $_prepared_statement ?></p>
