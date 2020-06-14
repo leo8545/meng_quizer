@@ -1,4 +1,80 @@
 (function ($) {
+	class MengAdmin {
+		constructor({ wrapper }) {
+			this.wrapper = wrapper;
+			this.showLoading();
+			this.response = null;
+			this.result = null;
+		}
+		async request({ action, postId }) {
+			const { ajax_url, security } = ajaxObject;
+			return new Promise((resolve, reject) => {
+				var response = {};
+				$.ajax({
+					data: {
+						action,
+						security,
+						postId,
+					},
+					url: ajax_url,
+					method: "post",
+				})
+					.success((_response) => {
+						response = JSON.parse(_response);
+						this.response = response;
+						this.hideLoading();
+						resolve(response);
+					})
+					.error((err) => {
+						reject(err);
+					});
+			});
+		}
+		/**
+		 * Show loading div on page load,
+		 */
+		showLoading() {
+			$(`${this.wrapper}>*:not(.meng-loading)`).hide();
+			$(`${this.wrapper}`).prepend(
+				"<div class='meng-loading'>Loading...</div>"
+			);
+		}
+		/**
+		 * Hide loading div when response arrives
+		 */
+		hideLoading() {
+			$(".meng-loading").remove();
+			$(`${this.wrapper}>*`).show();
+		}
+		/**
+		 * Get percentage of ratio
+		 * @param integer dividend
+		 * @param integer divisor
+		 */
+		getResult(dividend, divisor) {
+			this.result = this.response
+				? Math.round(((dividend / divisor) * 100 + Number.EPSILON) * 100) / 100
+				: 0;
+			return this.result;
+		}
+		/**
+		 * Show result div
+		 * @param integer dividend
+		 * @param integer divisor
+		 */
+		showResult({ dividend, divisor }) {
+			var result = this.getResult(dividend, divisor);
+			var resultText = `Your result is ${result}%`;
+			var resultWrapper = $(`${this.wrapper} .meng-result`);
+			if (resultWrapper.length) {
+				resultWrapper.text(resultText);
+			} else {
+				$(`${this.wrapper}`).append(
+					`<div class="meng-result">${resultText}</div>`
+				);
+			}
+		}
+	}
 	$(document).ready(function () {
 		$("#mcqs_form").submit((e) => {
 			e.preventDefault();
@@ -373,29 +449,16 @@
 		 */
 		waitForEl(".meng-true-false-wrapper", (e) => {
 			var response = {};
-			// Hide everything and adds loading div
-			$(".meng-true-false-wrapper>*:not(.meng-loading)").hide();
-			$(".meng-true-false-wrapper").prepend(
-				"<div class='meng-loading'>Loading...</div>"
-			);
-			$.ajax({
-				data: {
+			var admin = new MengAdmin({ wrapper: ".meng-true-false-wrapper" });
+			admin
+				.request({
 					action: "action_meng_true_false",
-					security: ajaxObject.security,
 					postId: $("#ex_id").val(),
-				},
-				url: ajaxObject.ajax_url,
-				method: "post",
-			}).success((_response) => {
-				response = JSON.parse(_response);
-				if (response) {
-					// Removes loading and show everything
-					$(".meng-loading").remove();
-					$(".meng-true-false-wrapper>*").show();
-				} else {
-					$(".meng-loading").text("Something went wrong!");
-				}
-			});
+				})
+				.then((res) => {
+					response = res;
+				});
+
 			var userCorrectAnswers = new Set();
 			$(".meng-form").submit((e) => {
 				e.preventDefault();
@@ -413,19 +476,10 @@
 						}
 					}
 				});
-				var result = response
-					? (userCorrectAnswers.size / Object.keys(response).length) * 100
-					: 0;
-				result = Math.round((result + Number.EPSILON) * 100) / 100;
-				var resultText = `Your result is: ${result}%`;
-				var resultWrapper = $(".meng-true-false-wrapper .meng-result");
-				if (resultWrapper.length) {
-					resultWrapper.text(resultText);
-				} else {
-					$(".meng-true-false-wrapper").append(
-						`<div class="meng-result">${resultText}</div>`
-					);
-				}
+				admin.showResult({
+					dividend: userCorrectAnswers.size,
+					divisor: Object.keys(response).length,
+				});
 			});
 		});
 	});

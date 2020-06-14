@@ -90,16 +90,22 @@ final class Meng_Quizer
 		// Ajax actions
 		// 1. for mcqs basic
 		add_action('wp_ajax_my_action', [$public, 'meng_ajax_action']);
+		add_action('wp_ajax_nopriv_my_action', [$public, 'meng_ajax_action']);
 		// 2. for mcqs cloze
 		add_action('wp_ajax_action_meng_cloze', [$public, 'meng_ajax_cloze_action']);
+		add_action('wp_ajax_nopriv_action_meng_cloze', [$public, 'meng_ajax_cloze_action']);
 		// 3. for blanks basic
 		add_action('wp_ajax_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
+		add_action('wp_ajax_nopriv_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
 		// 4. for blanks cols
 		add_action('wp_ajax_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
+		add_action('wp_ajax_nopriv_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
 		// 5. for blanks cols
 		add_action('wp_ajax_action_meng_multi_selector', [$public, 'meng_ajax_multi_selector_action']);
+		add_action('wp_ajax_nopriv_action_meng_multi_selector', [$public, 'meng_ajax_multi_selector_action']);
 		// 6. for true false
 		add_action('wp_ajax_action_meng_true_false', [$public, 'meng_ajax_true_false_action']);
+		add_action('wp_ajax_nopriv_action_meng_true_false', [$public, 'meng_ajax_true_false_action']);
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);
