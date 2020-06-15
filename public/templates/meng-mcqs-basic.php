@@ -9,14 +9,14 @@ $excercise = get_post((int) $atts['id']);
 
 if( !is_null($excercise) && $excercise->post_type === 'meng_mcqs_basic' ) {
 	$mcqs = get_post_meta($excercise->ID, 'meng_mcqs', true ); ?>
-	<div class="meng_mcqs_container">
+	<div class="meng-mcqs-basic-wrapper">
 		<?php if($atts['layout'] === 'infography') : ?>
 			<div class="post_content"><?php echo $excercise->post_content ?></div>
 		<?php endif; ?>
 
 		<?php do_action('meng_mcqs_basic_before_form') ?>
 
-		<form method="post" id="mcqs_form">
+		<form method="post" class="meng-form mcqs-form">
 
 			<?php
 			foreach( $mcqs as $key => $mcq ) { 
@@ -25,7 +25,7 @@ if( !is_null($excercise) && $excercise->post_type === 'meng_mcqs_basic' ) {
 
 				<?php do_action('meng_mcqs_basic_before_single_mcq') ?>
 				
-				<div class="mcq-<?php echo $key ?>">
+				<div class="mcq-<?php echo $key ?> meng-mcq-single" data-qid="<?php echo $key ?>">
 					<p class="mcq-statement"><?php echo $key ?>. <?php echo htmlspecialchars_decode( $mcq['statement'] ) ?></p>
 					<div class="mcq-options">
 						<?php foreach($options as $opt_key => $option) :
@@ -34,7 +34,7 @@ if( !is_null($excercise) && $excercise->post_type === 'meng_mcqs_basic' ) {
 								$option = explode(":", $option)[0];
 							}
 							$id = "mcq-$key-option-$opt_key"; ?>
-							<label for="<?php echo $id ?>" class="meng_radio"><input type="radio" name="mcq[<?php echo $key ?>]" id="<?php echo $id ?>" class="meng_mcq_input_radio hidden" value="<?php echo trim($option) ?>"><span class="meng_label"></span><span><?php echo $option ?></span></label>
+							<label for="<?php echo $id ?>" class="meng_radio"><input type="radio" name="mcq[<?php echo $key ?>]" id="<?php echo $id ?>" class="meng_mcq_input_radio hidden" value="<?php echo trim($option) ?>"><span class="meng_label"></span><span class="meng-mcq-option-name"><?php echo $option ?></span></label>
 						<?php endforeach; ?>
 					</div>
 				</div>

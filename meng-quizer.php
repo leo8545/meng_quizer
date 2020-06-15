@@ -89,8 +89,8 @@ final class Meng_Quizer
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_scripts']);
 		// Ajax actions
 		// 1. for mcqs basic
-		add_action('wp_ajax_my_action', [$public, 'meng_ajax_action']);
-		add_action('wp_ajax_nopriv_my_action', [$public, 'meng_ajax_action']);
+		add_action('wp_ajax_action_meng_mcqs_basic', [$public, 'action_meng_mcqs_basic']);
+		add_action('wp_ajax_nopriv_action_meng_mcqs_basic', [$public, 'action_meng_mcqs_basic']);
 		// 2. for mcqs cloze
 		add_action('wp_ajax_action_meng_mcqs_cloze', [$public, 'meng_ajax_mcqs_cloze_action']);
 		add_action('wp_ajax_nopriv_action_meng_mcqs_cloze', [$public, 'meng_ajax_mcqs_cloze_action']);

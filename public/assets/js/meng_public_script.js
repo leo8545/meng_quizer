@@ -36,7 +36,7 @@
 		showLoading() {
 			$(`${this.wrapper}>*:not(.meng-loading)`).hide();
 			$(`${this.wrapper}`).prepend(
-				"<div class='meng-loading'>Loading...</div>"
+				`<div class='meng-loading'><img src='${ajaxObject.plugin_url}/public/assets/images/loading-2.gif' class="meng-loading-image">Loading...</div>`
 			);
 		}
 		/**
@@ -64,7 +64,8 @@
 		 */
 		showResult({ dividend, divisor }) {
 			var result = this.getResult(dividend, divisor);
-			var resultText = `Your result is ${result}%`;
+			var resultText = result === 100 ? "😃 Great Job! " : "";
+			resultText += `Your result is ${result}%`;
 			var resultWrapper = $(`${this.wrapper} .meng-result`);
 			if (resultWrapper.length) {
 				resultWrapper.text(resultText);
@@ -95,61 +96,17 @@
 			});
 		}
 	}
+	// check if a selector has been loaded
+	var waitForEl = function (selector, callback) {
+		if (jQuery(selector).length) {
+			callback();
+		} else {
+			setTimeout(function () {
+				waitForEl(selector, callback);
+			}, 100);
+		}
+	};
 	$(document).ready(function () {
-		$("#mcqs_form").submit((e) => {
-			e.preventDefault();
-			$.ajax({
-				data: {
-					action: "my_action",
-					security: ajaxObject.security,
-					serialized: $("#mcqs_form").serialize(),
-					exId: $("#ex_id").val(),
-				},
-				method: "POST",
-				url: ajaxObject.ajax_url,
-			}).success((_response) => {
-				response = JSON.parse(_response);
-				console.log(response);
-				// check answers
-				correct_answers = 0;
-				for (i = 1; i <= Object.keys(response).length; i++) {
-					userAnswer = $(`div.mcq-${i} input[type=radio]:checked`).val();
-					console.log("u:" + userAnswer + "a:" + response[i]);
-					if (userAnswer !== undefined && userAnswer == response[i]) {
-						correct_answers++;
-						answer = { correct: true, message: "Correct answer" };
-					} else {
-						answer = { correct: false, message: "Incorrect answer" };
-					}
-
-					if ($(`div.mcq-${i}`).find("div.answer").length !== 0) {
-						if (answer.correct) {
-							$(`div.mcq-${i} div.answer`).removeClass("incorrect");
-							$(`div.mcq-${i} div.answer`).addClass("correct");
-						} else {
-							$(`div.mcq-${i} div.answer`).removeClass("correct");
-							$(`div.mcq-${i} div.answer`).addClass("incorrect");
-						}
-						$(`div.mcq-${i} div.answer`).text(answer.message);
-					} else {
-						$(`div.mcq-${i}`).append(
-							`<div class='answer ${
-								answer.correct ? "correct" : "incorrect"
-							}'>${answer.message}</div>`
-						);
-					}
-				}
-				$("#meng_mcqs_result").text(
-					`Your result: ${
-						Math.round(
-							((correct_answers / Object.keys(response).length) * 100 +
-								Number.EPSILON) *
-								100
-						) / 100
-					}%`
-				);
-			});
-		});
 		$("ul.meng_sortables").sortable({
 			start: function (event, ui) {
 				$(ui.item).addClass("meng-sortable-active");
@@ -159,16 +116,50 @@
 			},
 		});
 		$("ul.meng_sortables").disableSelection();
-		// check if a selector has been loaded
-		var waitForEl = function (selector, callback) {
-			if (jQuery(selector).length) {
-				callback();
-			} else {
-				setTimeout(function () {
-					waitForEl(selector, callback);
-				}, 100);
-			}
-		};
+		/**
+		 * Quiz type: meng_mcqs_basic
+		 *
+		 * @since 1.0.0
+		 */
+		waitForEl(".meng-mcqs-basic-wrapper", (e) => {
+			var response = {};
+			var admin = new MengAdmin({ wrapper: ".meng-mcqs-basic-wrapper" });
+			admin
+				.request({
+					action: "action_meng_mcqs_basic",
+					postId: $("#ex_id").val(),
+				})
+				.then((res) => {
+					response = res;
+					console.log(response);
+				});
+			$(".mcqs-form").submit((e) => {
+				e.preventDefault();
+				var correctCounter = 0;
+				var mcqs = $(".mcqs-form .meng-mcq-single");
+				$.each(mcqs, (index, q) => {
+					var qid = q.getAttribute("data-qid");
+					var input = $(`input[name="mcq[${qid}]"]:checked`);
+					var inputText = input
+						.closest(".meng_radio")
+						.find(".meng-mcq-option-name");
+					if (
+						input.val() &&
+						response[qid].options.correct.toLowerCase().trim() ===
+							input.val().toLowerCase().trim()
+					) {
+						correctCounter++;
+						inputText.addClass("meng-correct-answer--text");
+					} else {
+						inputText.addClass("meng-wrong-answer--text");
+					}
+				});
+				admin.showResult({
+					dividend: correctCounter,
+					divisor: Object.keys(response).length,
+				});
+			});
+		});
 		/**
 		 * Quiz type: meng_mcqs_cloze
 		 *

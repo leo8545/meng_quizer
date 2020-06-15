@@ -35,7 +35,8 @@ class Meng_Quiz_Public
 		// Ajax object for main file
 		wp_localize_script('meng_public_script', 'ajaxObject', [
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'security' => wp_create_nonce( 'my-special-string' )
+			'security' => wp_create_nonce( 'my-special-string' ),
+			'plugin_url' => MENG_QUIZ_URI
 		]);
 		
 		// jQuery-UI script
@@ -49,16 +50,12 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public static function meng_ajax_action()
+	public static function action_meng_mcqs_basic()
 	{
-		check_ajax_referer( 'my-special-string', 'security' );
-		$ex_id = $_POST["exId"];
-		$ex = get_post_meta((int) $ex_id,'meng_mcqs',true);
-		$result = [];
-		foreach($ex as $k => $e) {
-			$result[$k] = $e['options']['correct']; // All mcqs with their number => 'answer
-		}
-		echo json_encode($result);
+		check_ajax_referer('my-special-string', 'security');
+		$ex_id = (int) $_POST['postId'];
+		$excercise = get_post_meta($ex_id, 'meng_mcqs', true);
+		echo json_encode($excercise);
 		die();
 	}
 
