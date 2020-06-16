@@ -6,10 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post;
-$blanks = get_post_meta($post->ID, 'meng_blanks_basic', true); 
-echo '<pre>';
-print_r($blanks);
-echo '</pre>';
+$blanks = get_post_meta($post->ID, 'meng_blanks_basic', true);
 ?>
 
 <div class="meng_blanks_wrapper">

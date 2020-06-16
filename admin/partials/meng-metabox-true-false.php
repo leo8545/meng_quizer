@@ -3,9 +3,6 @@
 global $post;
 
 $questions = get_post_meta( $post->ID, 'meng_true_false', true );
-echo '<pre>';
-print_r($questions);
-echo '</pre>';
 ?>
 
 <div class="meng-mb-wrapper meng-mb-multi-selector">
