@@ -38,6 +38,9 @@ class Meng_Quiz_Public
 			'security' => wp_create_nonce( 'my-special-string' ),
 			'plugin_url' => MENG_QUIZ_URI
 		]);
+
+		// Main script file
+		wp_enqueue_script('meng_public_script_basic', $dir . 'meng_public_script_basic.js', ['jquery'], MENG_VERSION);
 		
 		// jQuery-UI script
 		wp_enqueue_script('jquery-ui', $dir . 'jquery-ui.min.js', ['jquery']);
