@@ -53,7 +53,7 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public static function action_meng_mcqs_basic()
+	public static function meng_ajax_action_meng_mcqs_basic()
 	{
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
@@ -69,7 +69,7 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public function meng_ajax_mcqs_cloze_action()
+	public function meng_ajax_action_meng_mcqs_cloze()
 	{
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
@@ -85,7 +85,7 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public function meng_ajax_blanks_basic_action()
+	public function meng_ajax_action_meng_blanks_basic()
 	{
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
@@ -101,7 +101,7 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public function meng_ajax_blanks_cols_action()
+	public function meng_ajax_action_meng_blanks_cols()
 	{
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
@@ -117,7 +117,7 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public function meng_ajax_multi_selector_action()
+	public function meng_ajax_action_meng_multi_selector()
 	{
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
@@ -133,7 +133,7 @@ class Meng_Quiz_Public
 	 *
 	 * @return void
 	 */
-	public function meng_ajax_true_false_action()
+	public function meng_ajax_action_meng_true_false()
 	{
 		check_ajax_referer('my-special-string', 'security');
 		$ex_id = (int) $_POST['postId'];
@@ -254,7 +254,8 @@ class Meng_Quiz_Public
 	public static function meng_true_false_shortcode_callback($atts)
 	{
 		$atts = shortcode_atts([
-			'id' => 0
+			'id' => 0,
+			'layout' => 'simple'
 		], $atts, 'meng_true_false');
 
 		ob_start();

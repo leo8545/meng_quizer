@@ -75,6 +75,8 @@ final class Meng_Quizer
 		require MENG_QUIZ_DIR . 'admin/class-meng-quiz-admin-metabox.php';
 		require MENG_QUIZ_DIR . 'public/class-meng-quiz-public.php';
 		require MENG_QUIZ_DIR . 'inc/functions.php';
+		require MENG_QUIZ_DIR . "Utils/PostColumns.php";
+		require MENG_QUIZ_DIR . "Utils/Ajax.php";
 	}
 
 	/**
@@ -88,24 +90,13 @@ final class Meng_Quizer
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_styles']);
 		add_action('wp_enqueue_scripts', [$public, 'enqueue_scripts']);
 		// Ajax actions
-		// 1. for mcqs basic
-		add_action('wp_ajax_action_meng_mcqs_basic', [$public, 'action_meng_mcqs_basic']);
-		add_action('wp_ajax_nopriv_action_meng_mcqs_basic', [$public, 'action_meng_mcqs_basic']);
-		// 2. for mcqs cloze
-		add_action('wp_ajax_action_meng_mcqs_cloze', [$public, 'meng_ajax_mcqs_cloze_action']);
-		add_action('wp_ajax_nopriv_action_meng_mcqs_cloze', [$public, 'meng_ajax_mcqs_cloze_action']);
-		// 3. for blanks basic
-		add_action('wp_ajax_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
-		add_action('wp_ajax_nopriv_action_meng_blanks_basic', [$public, 'meng_ajax_blanks_basic_action']);
-		// 4. for blanks cols
-		add_action('wp_ajax_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
-		add_action('wp_ajax_nopriv_action_meng_blanks_cols', [$public, 'meng_ajax_blanks_cols_action']);
-		// 5. for blanks cols
-		add_action('wp_ajax_action_meng_multi_selector', [$public, 'meng_ajax_multi_selector_action']);
-		add_action('wp_ajax_nopriv_action_meng_multi_selector', [$public, 'meng_ajax_multi_selector_action']);
-		// 6. for true false
-		add_action('wp_ajax_action_meng_true_false', [$public, 'meng_ajax_true_false_action']);
-		add_action('wp_ajax_nopriv_action_meng_true_false', [$public, 'meng_ajax_true_false_action']);
+		$postTypes = [
+			'meng_mcqs_basic', 'meng_mcqs_cloze', 'meng_blanks_basic', 'meng_blanks_cols', 'meng_multi_selector', 'meng_true_false'
+		];
+		foreach($postTypes as $postType) {
+			$ajax = new Ajax($postType);
+			$ajax->ajax(['Meng_Quiz_Public', "meng_ajax_action_{$postType}"]);
+		}
 		// Shortcodes
 		add_shortcode('meng_mcqs_basic', [$public, 'meng_mcqs_basic_shortcode_callback']);
 		add_shortcode('meng_sortables_basic', [$public, 'meng_sortables_basic_shortcode_callback']);
@@ -128,24 +119,16 @@ final class Meng_Quizer
 		add_action('admin_enqueue_scripts', [$admin, 'enqueue_scripts']);
 		add_action('init', [$admin, 'register_post_types']);
 		// Custom columns for quiz types
-		// 1. Basic sortables
-		add_filter('manage_meng_sortables_basic_posts_columns', ['Meng_Quiz_Admin', 'meng_sortables_basic_post_columns'], 10, 1);
-		add_action('manage_meng_sortables_basic_posts_custom_column', ['Meng_Quiz_Admin', 'meng_sortables_basic_post_custom_column'], 10, 2);
-		// 2. Basic Mcqs
-		add_filter('manage_meng_mcqs_basic_posts_columns', ['Meng_Quiz_Admin', 'meng_mcqs_basic_post_columns'], 10, 1);
-		add_action('manage_meng_mcqs_basic_posts_custom_column', ['Meng_Quiz_Admin', 'meng_mcqs_basic_post_custom_column'], 10, 2);
-		// 3. Cloze Mcqs
-		add_filter('manage_meng_mcqs_cloze_posts_columns', ['Meng_Quiz_Admin', 'meng_mcqs_cloze_post_columns'], 10, 1);
-		add_action('manage_meng_mcqs_cloze_posts_custom_column', ['Meng_Quiz_Admin', 'meng_mcqs_cloze_post_custom_column'], 10, 2);
-		// 4. Blanks Columns
-		add_filter('manage_meng_blanks_cols_posts_columns', ['Meng_Quiz_Admin', 'meng_blanks_cols_post_columns'], 10, 1);
-		add_action('manage_meng_blanks_cols_posts_custom_column', ['Meng_Quiz_Admin', 'meng_blanks_cols_post_custom_column'], 10, 2);
-		// 5. Multi Selectors
-		add_filter('manage_meng_multi_selector_posts_columns', ['Meng_Quiz_Admin', 'meng_multi_selector_post_columns'], 10, 1);
-		add_action('manage_meng_multi_selector_posts_custom_column', ['Meng_Quiz_Admin', 'meng_multi_selector_post_custom_column'], 10, 2);
-		// 6. True / False
-		add_filter('manage_meng_true_false_posts_columns', ['Meng_Quiz_Admin', 'meng_true_false_post_columns'], 10, 1);
-		add_action('manage_meng_true_false_posts_custom_column', ['Meng_Quiz_Admin', 'meng_true_false_post_custom_column'], 10, 2);
+		$postTypes = [
+			'meng_sortables_basic', 'meng_mcqs_basic', 'meng_mcqs_cloze', 'meng_blanks_cols', 'meng_multi_selector', 'meng_true_false'
+		];
+
+		foreach( $postTypes as $postType ) {
+			$postColumn = new PostColumns($postType);
+			$postColumn->add(['Meng_Quiz_Admin', $postType . '_post_columns']); // Add new column
+			$postColumn->populate(['Meng_Quiz_Admin', $postType . '_post_custom_column']); // Populate that new column
+		}
+
 		// Class: Metabox
 		add_action('add_meta_boxes', ['Meng_Quiz_Admin_Metabox', 'add']);
 		add_action('save_post', ['Meng_Quiz_Admin_Metabox', 'save']);

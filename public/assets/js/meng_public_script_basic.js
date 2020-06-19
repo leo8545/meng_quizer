@@ -35,8 +35,8 @@ var getPreviousSibling = function (elem, selector) {
 			slide.setAttribute("data-meng_slide", index);
 		});
 		var btnWrapper = `<div class="meng-slider-btns">
-									<div class="meng-btn-next">Next</div>
 									<div class="meng-btn-prev">Previous</div>
+									<div class="meng-btn-next">Next</div>
 								</div>`;
 		$(".meng-slider").append(btnWrapper);
 		var slides = document.querySelectorAll(".meng-slider .meng-slide");
@@ -58,6 +58,20 @@ var getPreviousSibling = function (elem, selector) {
 				);
 			}
 		});
+		// Time
+		var timerWrapper = `<div class="meng-timer"></div>`;
+		var startTime = new Date().getTime();
+		setInterval(() => {
+			var endTime = new Date().getTime();
+			var diff = endTime - startTime;
+			var secs = Math.floor(diff / 1000);
+			if (secs > 2) {
+				$(".meng-timer").css("color", "#f00");
+				clearInterval();
+			}
+			$(".meng-timer").text(secs + " sec");
+		}, 1000);
+		$(".meng-slider").prepend(timerWrapper);
 		// Attempted counter
 		var attemptedCounterWrapper = `<div class="meng-attempted-counter-wrapper">
 													<div>Attempted: <span class="meng-att-count">0</span>/<span class="meng-att-total">${slides.length}</span><div>
@@ -69,6 +83,11 @@ var getPreviousSibling = function (elem, selector) {
 				e.target.closest(".meng-slide").getAttribute("data-meng_slide")
 			);
 			$(".meng-att-count").text(counter.size);
+			// if (counter.size === slides.length) {
+			// 	var endTime = new Date().getTime();
+			// 	var diff = endTime - startTime;
+			// 	console.log(endTime, startTime, diff / 1000);
+			// }
 		});
 	});
 })(jQuery);

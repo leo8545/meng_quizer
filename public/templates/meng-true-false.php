@@ -7,7 +7,7 @@ if(@$questions) : ?>
 
 	<form method="post" class="meng-form">
 		<div class="meng-questions">
-			<ol class="meng-list meng-true-false-list meng-slider">
+			<ol class="meng-list meng-true-false-list <?php echo $atts['layout'] === 'slider' ? "meng-slider" : ""; ?>">
 			<?php foreach( $questions as $qid => $question ) : ?>
 				<li class="meng-form-field" id="meng-true-false-<?php echo $qid ?>" data-qid="<?php echo $qid ?>">
 					<p><?php _e( $question['statement'], 'meng' ) ?></p>
