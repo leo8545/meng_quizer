@@ -24,18 +24,8 @@ if( !defined('ABSPATH') ) {
 					</tr>
 					<tr>
 						<td><pre>id</pre></td>
-						<td><b>Required</b><p>Id of the post/excercise of MCSs Basic</p></td>
+						<td><b>Required</b><p>Id of the post/excercise of MCQs Basic</p></td>
 						<td><pre>[meng_mcqs_basic id="1"]</pre></td>
-					</tr>
-					<tr>
-						<td><pre>layout</pre></td>
-						<td>
-							<b>Optional</b>
-							<p>Layout of the mcqs. Possible options are: <pre>simple, infography</pre> If infography is selected, the excercise content should be set and the infography picture should be set as featured image.</p>
-						</td>
-						<td>
-							<pre>[meng_mcqs_basic id="1" layout="simple"]</pre>
-						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -59,7 +49,7 @@ if( !defined('ABSPATH') ) {
 					</tr>
 					<tr>
 						<td><pre>id</pre></td>
-						<td><b>Required</b><p>Id of the post/excercise of MCSs Cloze</p></td>
+						<td><b>Required</b><p>Id of the post/excercise of MCQs Cloze</p></td>
 						<td><pre>[meng_mcqs_cloze id="1"]</pre></td>
 					</tr>
 				</tbody>
@@ -86,16 +76,6 @@ if( !defined('ABSPATH') ) {
 						<td><pre>id</pre></td>
 						<td><b>Required</b><p>Id of the post/excercise of Sortables Basic</p></td>
 						<td><pre>[meng_sortables_basic id="1"]</pre></td>
-					</tr>
-					<tr>
-						<td><pre>layout</pre></td>
-						<td>
-							<b>Optional</b>
-							<p>Layout of the sortables. Possible options are: <pre>simple, left</pre> Simple would show two equal columns. Left would show left column 25% and right one as 75%</p>
-						</td>
-						<td>
-							<pre>[meng_sortables_basic id="1" layout="simple"]</pre>
-						</td>
 					</tr>
 				</tbody>
 			</table>
