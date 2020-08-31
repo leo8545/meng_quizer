@@ -3,9 +3,13 @@
 		let counter = $(".mcqs>*").length;
 		$("span#meng_mcqs_add_btn").on("click", (e) => {
 			counter++;
-			let html = `<div>${counter}</div>`;
-			html += `<input name="meng_mcqs[${counter}][statement]" class="mcqs_statement" placeholder="Enter the mcq's statement" />`;
-			html += `<input name="meng_mcqs[${counter}][options]" class="mcqs_options" placeholder="Enter mcqs options here separated by '|'" />`;
+			let html = `<div id="mcq-${counter}" class="meng_quiz_single_field">
+					<div>${counter}.</div>
+					<label for="">Statment for the mcqs:</label>
+					<input name="meng_mcqs[${counter}][statement]" value="" class="mcqs_statement" />
+					<label for="">Options for the mcqs:</label>
+					<input name="meng_mcqs[${counter}][options]" value="" class="mcqs_options" />
+				</div>`;
 			$(".mcqs").append(`<div id="mcq-${counter}">${html}</div>`);
 		});
 		var counter1 = $(".meng_sortables>*").length;
