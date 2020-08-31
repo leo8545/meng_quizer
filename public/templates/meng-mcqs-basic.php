@@ -30,8 +30,8 @@ if( !is_null($excercise) && $excercise->post_type === 'meng_mcqs_basic' ) {
 					<div class="mcq-options">
 						<?php foreach($options as $opt_key => $option) :
 							$opt_key++; // to make it start from 1
-							if( strpos($option,":correct") !== false ) {
-								$option = explode(":", $option)[0];
+							if( strpos($option,"[") !== false ) {
+								$option = trim( substr($option, strpos($option, "[")+1, strlen(trim($option))-2 ) );
 							}
 							$id = "mcq-$key-option-$opt_key"; ?>
 							<label for="<?php echo $id ?>" class="meng_radio"><input type="radio" name="mcq[<?php echo $key ?>]" id="<?php echo $id ?>" class="meng_mcq_input_radio hidden" value="<?php echo trim($option) ?>"><span class="meng_label"></span><span class="meng-mcq-option-name"><?php echo $option ?></span></label>
