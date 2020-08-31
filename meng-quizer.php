@@ -122,7 +122,7 @@ final class Meng_Quizer
 		$postTypes = [
 			'meng_sortables_basic', 'meng_mcqs_basic', 'meng_mcqs_cloze', 'meng_blanks_cols', 'meng_multi_selector', 'meng_true_false'
 		];
-
+		
 		foreach( $postTypes as $postType ) {
 			$postColumn = new PostColumns($postType);
 			$postColumn->add(['Meng_Quiz_Admin', $postType . '_post_columns']); // Add new column
