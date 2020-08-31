@@ -9,6 +9,7 @@ class Meng_Quiz_Admin_Metabox
 {
 	public static function add()
 	{
+		// Basic mcqs
 		add_meta_box(
 			'meng_mcqs_basic',
 			__( 'Mcqs Basic', 'meng' ),
@@ -23,7 +24,7 @@ class Meng_Quiz_Admin_Metabox
 			__( 'Shortcode', 'meng' ),
 			function($post) { ?>
 				<div class="meng_shortcode">
-					<strong>[meng_mcqs_basic id="<?php echo $post->ID ?>" layout="simple"]</strong>
+					<strong>[meng_mcqs_basic id="<?php echo $post->ID ?>"]</strong>
 				</div> <?php
 			},
 			'meng_mcqs_basic',
@@ -31,6 +32,7 @@ class Meng_Quiz_Admin_Metabox
 			'high'
 		);
 
+		// Sortables basic
 		add_meta_box(
 			'meng_sortables_basic',
 			__( 'Sortables Basic', 'meng' ),
@@ -44,13 +46,14 @@ class Meng_Quiz_Admin_Metabox
 			'meng_sortables_basic_helper',
 			__( 'Shortcode', 'meng' ),
 			function($post) { ?>
-				<div class="meng_shortcode"><strong>[meng_sortables_basic id="<?php echo $post->ID ?>" layout="simple"]</strong></div> <?php
+				<div class="meng_shortcode"><strong>[meng_sortables_basic id="<?php echo $post->ID ?>"]</strong></div> <?php
 			},
 			'meng_sortables_basic',
 			'side',
 			'high'
 		);
 
+		// Mcqs Cloze
 		add_meta_box(
 			'meng_mcqs_cloze',
 			__( 'MCQs Cloze', 'meng' ),
@@ -59,7 +62,18 @@ class Meng_Quiz_Admin_Metabox
 			},
 			'meng_mcqs_cloze'
 		);
+		add_meta_box(
+			'meng_mcqs_cloze_helper',
+			__( 'Shortcode', 'meng' ),
+			function($post) { ?>
+				<div class="meng_shortcode"><strong>[meng_mcqs_cloze id="<?php echo $post->ID ?>"]</strong></div> <?php
+			},
+			'meng_mcqs_cloze',
+			'side',
+			'high'
+		);
 
+		// Blanks basic
 		add_meta_box(
 			'meng_blanks_basic',
 			__('Blanks Basic', 'meng'),
@@ -73,7 +87,7 @@ class Meng_Quiz_Admin_Metabox
 			'meng_blanks_basic_helper',
 			__('Shortcode', 'meng'),
 			function($post) { ?>
-				<div class="meng_shortcode"><strong>[meng_blanks_basic id="<?php echo $post->ID ?>" layout="simple"]</strong></div> <?php
+				<div class="meng_shortcode"><strong>[meng_blanks_basic id="<?php echo $post->ID ?>"]</strong></div> <?php
 			},
 			'meng_blanks_basic',
 			'side',
@@ -89,6 +103,16 @@ class Meng_Quiz_Admin_Metabox
 			},
 			'meng_blanks_cols'
 		);
+		add_meta_box(
+			'meng_blanks_cols_helper',
+			__( 'Shortcode', 'meng' ),
+			function($post) { ?>
+				<div class="meng_shortcode"><strong>[meng_blanks_cols id="<?php echo $post->ID ?>"]</strong></div> <?php
+			},
+			'meng_blanks_cols',
+			'side',
+			'high'
+		);
 
 		// Multi selectors
 		add_meta_box(
@@ -99,6 +123,16 @@ class Meng_Quiz_Admin_Metabox
 			},
 			'meng_multi_selector'
 		);
+		add_meta_box(
+			'meng_multi_selector_helper',
+			__( 'Shortcode', 'meng' ),
+			function($post) { ?>
+				<div class="meng_shortcode"><strong>[meng_multi_selector id="<?php echo $post->ID ?>"]</strong></div> <?php
+			},
+			'meng_multi_selector',
+			'side',
+			'high'
+		);
 
 		// True / False
 		add_meta_box(
@@ -108,6 +142,16 @@ class Meng_Quiz_Admin_Metabox
 				require MENG_QUIZ_DIR . '/admin/partials/meng-metabox-true-false.php';
 			},
 			'meng_true_false'
+		);
+		add_meta_box(
+			'meng_true_false_helper',
+			__( 'Shortcode', 'meng' ),
+			function($post) { ?>
+				<div class="meng_shortcode"><strong>[meng_true_false id="<?php echo $post->ID ?>"]</strong></div> <?php
+			},
+			'meng_true_false',
+			'side',
+			'high'
 		);
 	}
 
