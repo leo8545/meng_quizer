@@ -8,7 +8,7 @@ $questions = get_post_meta($post->ID, 'meng_multi_selector', true);
 
 <div class="meng-mb-wrapper meng-mb-multi-selector">
 	<div class="meng-description">
-		<p class="description"><?php _e('Write options separated by | and use :correct as suffix for correct options', 'meng') ?></p>
+		<p class="description"><?php _e('Write options separated by | and write correct options inside brackets e.g. a | [b] | [c] | d', 'meng') ?></p>
 	</div>
 	<div class="meng-questions">
 		<?php 

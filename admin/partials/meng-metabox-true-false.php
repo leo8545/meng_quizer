@@ -7,7 +7,7 @@ $questions = get_post_meta( $post->ID, 'meng_true_false', true );
 
 <div class="meng-mb-wrapper meng-mb-multi-selector">
 	<div class="meng-description">
-		<p class="description"><?php _e('Write options separated by | and use :correct as suffix for correct options', 'meng') ?></p>
+		<p class="description"><?php _e('Write statment and choose whether its a true or a false statment.', 'meng') ?></p>
 	</div>
 	<div class="meng-questions">
 		<?php 
