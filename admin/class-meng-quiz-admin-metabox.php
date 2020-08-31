@@ -124,9 +124,13 @@ class Meng_Quiz_Admin_Metabox
 					$valid_mcqs[$counter]['options']['string'] = $mcq['options'];
 					foreach( explode( "|", $mcq['options'] ) as $_index => $_option ) {
 						$valid_mcqs[$counter]['options']['array'][] = trim($_option);
-						if( strpos($_option, ":correct") !== false ) {
-							$valid_mcqs[$counter]['options']['correct'] = trim( explode(":correct", $_option)[0] );
+						if(strpos($_option, "[") !== false) {
+							$op = substr($_option, strpos($_option, "[")+1, strlen(trim($_option))-2 );
+							$valid_mcqs[$counter]['options']['correct'] = trim($op);
 						}
+						// if( strpos($_option, ":correct") !== false ) {
+						// 	$valid_mcqs[$counter]['options']['correct'] = trim( explode(":correct", $_option)[0] );
+						// }
 					}
 
 				}
