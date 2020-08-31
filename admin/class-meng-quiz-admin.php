@@ -96,7 +96,7 @@ class Meng_Quiz_Admin
 			return [
 				'cb' => $columns['cb'],
 				'title' => $columns['title'],
-				'meng_count' => apply_filters('meng_admin_post_column_meng_count_label', 'No. of ' . explode('_', $post_columns[$column_id])[1], $post_columns[$column_id]),
+				'meng_count' => 'No. of questions',
 				'meng_shortcode' => 'Shortcode',
 				'date' => $columns['date']
 			];
