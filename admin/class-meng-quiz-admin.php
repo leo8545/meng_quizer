@@ -87,7 +87,8 @@ class Meng_Quiz_Admin
 			'meng_mcqs_cloze_post_columns',
 			'meng_blanks_cols_post_columns',
 			'meng_multi_selector_post_columns',
-			'meng_true_false_post_columns'
+			'meng_true_false_post_columns',
+			'meng_blanks_basic_post_columns'
 		];
 		$column_id = array_search($func, $post_columns);
 		if( $column_id !== false ) {
@@ -107,7 +108,8 @@ class Meng_Quiz_Admin
 			'meng_sortables_basic_post_custom_column' => 'meng_sortables',
 			'meng_blanks_cols_post_custom_column' => 'meng_blanks_cols',
 			'meng_multi_selector_post_custom_column' => 'meng_multi_selector',
-			'meng_true_false_post_custom_column' => 'meng_true_false'
+			'meng_true_false_post_custom_column' => 'meng_true_false',
+			'meng_blanks_basic_post_custom_column' => 'meng_blanks_basic',
 		];
 		$custom_column_index = array_search($func, array_keys($custom_columns));
 		if( $custom_column_index !== false ) {
